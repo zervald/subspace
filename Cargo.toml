@@ -23,7 +23,7 @@ log = { version = "*", features = [
 
 [profile.dev]
 codegen-backend = "cranelift"
-opt-level = 1
+opt-level = 0
 
 [profile.dev.package."*"]
 codegen-backend = "llvm"
