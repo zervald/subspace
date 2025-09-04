@@ -21,7 +21,6 @@ rustflags = [
   "-Zthreads=0",
 ]
 
-
 #for Windows
 [target.x86_64-pc-windows-msvc]
 # LLD linker
