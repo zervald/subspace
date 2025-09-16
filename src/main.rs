@@ -15,10 +15,12 @@ use ui::UIPlugin;
 mod test_scene;
 use crate::test_scene::TestScenePlugin;
 
+const BACKGROUND_COLOR: ClearColor = ClearColor(Color::srgb(0.0, 0.0, 0.0));
+
 fn main() {
     App::new()
         // Bevy built-ins.
-        .insert_resource(ClearColor(Color::srgb(0.0, 0.05, 0.05)))
+        .insert_resource(BACKGROUND_COLOR)
         .insert_resource(AmbientLight {
             color: Color::default(),
             brightness: 1.0,
