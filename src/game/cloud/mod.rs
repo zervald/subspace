@@ -1,6 +1,6 @@
 use super::z_ordering;
 use crate::game::{
-    effect::{EffectSource, effect_event::AddEffectEvent},
+    effect::{EffectSource, effect_event::EventAddEffect},
     prelude::*,
 };
 use avian2d::prelude::*;
@@ -126,7 +126,7 @@ fn cloud_enter(
     };
 
     info!("Cloud {cloud} collided with {target}");
-    commands.trigger(AddEffectEvent::new(
+    commands.trigger(EventAddEffect::new(
         cloud,
         target.entity,
         None,
@@ -134,6 +134,8 @@ fn cloud_enter(
     ));
 }
 
+// TODO: find solution with lifetime,
+// maybe lifetime::event(T: Event) ?
 fn cloud_exit(
     trigger: Trigger<OnCollisionEnd>,
     mut commands: Commands,

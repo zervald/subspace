@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use effect_event::AddEffectEvent;
+use effect_event::EventAddEffect;
 use effect_types::EffectTypePlugin;
 
 use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
@@ -19,8 +19,8 @@ pub struct Effect {
 
 pub type EffectEntity = Entity;
 
-// TODO: form AddEffectEvent -> EffectEntity
-impl Effect {}
+// TODO: system transform AddEffectEvent -> EffectEntity
+fn catch_add_effect_event(mut event_reader: EventReader<EventAddEffect>) {}
 
 #[derive(Component, Deref, DerefMut)]
 pub struct EffectSource {
@@ -41,7 +41,7 @@ pub mod effect_types;
 pub struct EffectPlugin;
 impl Plugin for EffectPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<AddEffectEvent>();
+        app.add_event::<EventAddEffect>();
         app.add_plugins(EffectTypePlugin);
     }
 }

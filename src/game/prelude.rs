@@ -3,7 +3,7 @@ pub use crate::game::{
     detection::{DetectedContacts, EventDetection, emission::Emission},
     docking::EventDockingStart,
     effect::{
-        Effect, EffectEntity, EffectSource, effect_event::AddEffectEvent, effect_types::EffectType,
+        Effect, EffectEntity, EffectSource, effect_event::EventAddEffect, effect_types::EffectType,
     },
     gamestate::GameState,
     health::Health,
