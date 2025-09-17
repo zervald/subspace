@@ -8,6 +8,7 @@ impl Plugin for CommonPlugin {
             asset_loader::AssetLoaderPlugin,
             state::StatePlugin,
             despawn::DespawnPlugin,
+            lifetime::LifetimePlugin,
         ));
     }
 }
