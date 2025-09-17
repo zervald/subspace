@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-#[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
+#[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
 pub enum AppState {
     #[default]
     InGame,
@@ -12,7 +12,8 @@ pub struct StatePlugin;
 
 impl Plugin for StatePlugin {
     fn build(&self, app: &mut App) {
-        app.init_state::<AppState>().add_systems(
+        app.init_state::<AppState>();
+        app.add_systems(
             Update,
             (
                 game_state_input_events,

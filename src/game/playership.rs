@@ -56,6 +56,7 @@ pub fn spawn_playership(
         PlayerShip {
             name: "Serenity".into(),
         },
+        Name::new("Playership"),
         FollowCamera,
         Transform::from_xyz(0., 0., RadarOrdering::ZShips.as_f32()),
     ));
