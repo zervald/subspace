@@ -1,4 +1,6 @@
 use bevy::prelude::*;
+use effect_event::AddEffectEvent;
+use effect_types::EffectTypePlugin;
 
 use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
 
@@ -39,6 +41,7 @@ pub mod effect_types;
 pub struct EffectPlugin;
 impl Plugin for EffectPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(effect_types::EffectTypePlugin);
+        app.add_event::<AddEffectEvent>();
+        app.add_plugins(EffectTypePlugin);
     }
 }
