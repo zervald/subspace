@@ -12,7 +12,7 @@ pub struct Missile {
     pub damage: i32,
 }
 
-#[derive(Event)]
+#[derive(Message)]
 pub struct EventShootMissile {
     pub pos: Transform,
     pub vel: LinearVelocity,
@@ -22,7 +22,7 @@ pub struct MissilePlugin;
 
 impl Plugin for MissilePlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<EventShootMissile>();
+        app.add_message::<EventShootMissile>();
         app.add_systems(
             FixedUpdate,
             ev_spawn_missile.run_if(in_state(GameState::Cruising)),
@@ -65,11 +65,11 @@ fn obs_missile_collision(
     mut query: Query<&mut Health>,
     mut commands: Commands,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
     let missile_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let other_entity = trigger.collider1;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
         let damage: i32 = missile_query.get(missile_entity).unwrap().damage;

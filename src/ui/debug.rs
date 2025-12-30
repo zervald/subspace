@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 use crate::common::state::AppState;
 use crate::game::gravity::GravitySource;
-use avian2d::prelude::CollisionStarted;
+use avian2d::prelude::*;
 use bevy::{
     diagnostic::{
         EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin,

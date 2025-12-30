@@ -29,7 +29,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Sub-Space".to_string(),
-                resolution: WindowResolution::new(1920., 1080.),
+                resolution: WindowResolution::new(1920, 1080),
                 mode: WindowMode::BorderlessFullscreen(MonitorSelection::Primary),
                 ..default()
             }),

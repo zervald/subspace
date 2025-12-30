@@ -64,11 +64,11 @@ fn obs_planet_collision(
     planet_query: Query<&Planet>,
     mut query: Query<&mut Health>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
     let planet_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let other_entity = trigger.collider1;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
         let name = match planet_query.get(planet_entity) {

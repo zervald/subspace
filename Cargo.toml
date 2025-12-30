@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-bevy = "0.16"
+bevy = "0.17"
 # Set max log levels. This helps avoid unwanted low-severity log spam, which can affect performance.
 log = { version = "0.4", features = [
   "max_level_debug",
@@ -14,11 +14,30 @@ tracing = { version = "0.1", features = [
   "max_level_debug",
   "release_max_level_warn",
 ] }
-bevy_egui = "0.36"
-avian2d = "0.3"
+bevy_egui = "0.38"
+avian2d = "0.4"
 iyes_perf_ui = "0.5"
 rand = "0.9"
 getrandom = { version = "0.3", features = ["wasm_js"] }
+
+[features]
+# Default to a native dev build.
+default = ["dev_native"]
+dev = [
+    # Improve compile times for dev builds by linking Bevy as a dynamic library.
+    "bevy/dynamic_linking",
+    "bevy/bevy_dev_tools",
+    "bevy/bevy_ui_debug",
+    # Improve error messages coming from Bevy
+    "bevy/track_location",
+]
+dev_native = [
+    "dev",
+    # Enable asset hot reloading for native dev builds.
+    "bevy/file_watcher",
+    # Enable embedded asset hot reloading for native dev builds.
+    "bevy/embedded_watcher",
+]
 
 
 # Idiomatic Bevy code often triggers these lints, and the CI workflow treats them as errors.

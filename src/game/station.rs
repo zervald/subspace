@@ -58,11 +58,11 @@ fn obs_station_collision(
     mut ships_query: Query<(&mut LinearVelocity, &mut Health), With<Spaceship>>,
     // mut event: EventWriter<EventDocking>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
     let station_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let other_entity = trigger.collider1;
 
     if let Ok((vel, mut health)) = ships_query.get_mut(other_entity) {
         let name = &station_query.get(station_entity).unwrap().name;

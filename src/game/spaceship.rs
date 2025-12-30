@@ -78,11 +78,11 @@ fn observer_collision(
     trigger: Trigger<OnCollisionStart>,
     mut ship_query: Query<(&LinearVelocity, &mut Health), With<Spaceship>>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
     let ship = trigger.target();
-    let other_entity = trigger.collider;
+    let other_entity = trigger.collider1;
     if let Ok((velocity, mut health)) = ship_query.get_mut(ship) {
         let damage: i32 = (COLLISION_DAMAGE_FACTOR * velocity.length()).round() as i32;
         info!("SHIP COLLISION: {ship} collided with {other_entity} for {damage}");

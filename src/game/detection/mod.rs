@@ -28,7 +28,7 @@ impl Plugin for DetectionPlugin {
 #[derive(Component, Debug, Default, Deref, DerefMut)]
 pub struct DetectedContacts(pub HashMap<Entity, f32>);
 
-#[derive(Event)]
+#[derive(Message)]
 pub struct EventDetection {
     pub detector: Entity,
     pub target: Entity,
@@ -37,7 +37,7 @@ pub struct EventDetection {
 
 fn detected_update(
     mut query: Query<&mut DetectedContacts>,
-    mut event_reader: EventReader<EventDetection>,
+    mut event_reader: MessageReader<EventDetection>,
 ) {
     for event in event_reader.read() {
         let Ok(mut contacts) = query.get_mut(event.detector) else {

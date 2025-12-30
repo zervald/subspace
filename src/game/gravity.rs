@@ -1,5 +1,5 @@
 use crate::common::state::AppState;
-use avian2d::prelude::ExternalForce;
+use avian2d::prelude::*;
 use bevy::prelude::*;
 
 const DEFAULT_REACH: f32 = 1000.;

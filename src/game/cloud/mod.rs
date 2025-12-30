@@ -121,7 +121,7 @@ fn cloud_enter(
     let Ok(cloud_type) = cloud_query.get(cloud) else {
         return;
     };
-    let Ok(target) = ships_query.get(trigger.collider) else {
+    let Ok(target) = ships_query.get(trigger.collider1) else {
         return;
     };
 

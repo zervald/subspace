@@ -32,7 +32,7 @@ impl Lifetime {
 
     pub fn timer_finished(&self) -> bool {
         match self {
-            Lifetime::Timer(timer) => timer.finished(),
+            Lifetime::Timer(timer) => timer.is_finished(),
             _ => false,
         }
     }

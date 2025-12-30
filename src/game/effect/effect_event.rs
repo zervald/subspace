@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
 
-#[derive(Event)]
+#[derive(Message, Event)]
 pub struct EventAddEffect {
     source: Entity,
     target: Entity,
