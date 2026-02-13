@@ -130,12 +130,12 @@ fn rotate_asteroids(mut query: Query<&mut Transform, With<Asteroid>>, time: Res<
     }
 }
 
-fn obs_astroid_collision(trigger: Trigger<OnCollisionStart>, mut query: Query<&mut Health>) {
-    if trigger.body.is_none() {
+fn obs_astroid_collision(on: On<CollisionStart>, mut query: Query<&mut Health>) {
+    if on.body1.is_none() {
         return;
     }
-    let astroid_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let astroid_entity = on.event().event_target();
+    let other_entity = on.collider1;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
         debug!("ASTEROID COLLISION: {other_entity} collided with {astroid_entity}");

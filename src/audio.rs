@@ -1,10 +1,14 @@
 use bevy::prelude::*;
 
-pub(super) fn plugin(app: &mut App) {
-    app.add_systems(
-        Update,
-        apply_global_volume.run_if(resource_changed::<GlobalVolume>),
-    );
+pub struct AudioPlugin;
+
+impl Plugin for AudioPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            Update,
+            apply_global_volume.run_if(resource_changed::<GlobalVolume>),
+        );
+    }
 }
 
 /// An organizational marker component that should be added to a spawned [`AudioPlayer`] if it's in the

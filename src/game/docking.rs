@@ -4,19 +4,19 @@ use bevy::prelude::*;
 pub struct DockingPlugin;
 impl Plugin for DockingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<EventDockingStart>()
+        app.add_message::<EventDockingStart>()
             .add_systems(FixedUpdate, transition_to_docking);
     }
 }
 
-#[derive(Event, Debug)]
+#[derive(Message, Debug)]
 pub struct EventDockingStart {
     ship_id: Entity,
     station_id: Entity,
 }
 
 fn transition_to_docking(
-    event: EventReader<EventDockingStart>,
+    event: MessageReader<EventDockingStart>,
     mut next_state: ResMut<NextState<GameState>>,
 ) {
     if event.is_empty() {

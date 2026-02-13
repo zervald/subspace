@@ -10,5 +10,5 @@ pub use crate::game::{
     playership::PlayerShip,
     spaceship::Spaceship,
     station::Station,
-    z_ordering::RadarOrdering,
+    z_ordering::RadarZOrdering,
 };

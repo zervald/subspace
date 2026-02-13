@@ -1,22 +1,26 @@
 use bevy::prelude::*;
 
-pub(super) fn plugin(app: &mut App) {
-    app.add_plugins((
-        asteroids::AsteroidPlugin,
-        cloud::CloudPlugin,
-        detection::DetectionPlugin,
-        docking::DockingPlugin,
-        gravity::GravityPlugin,
-        health::HealthPlugin,
-        effect::EffectPlugin,
-        missile::MissilePlugin,
-        planet::PlanetPlugin,
-        gamestate::GameStatePlugin,
-        radar_camera::CameraPlugin,
-        playership::PlayershipPlugin,
-        spaceship::SpaceshipPlugin,
-        station::StationPlugin,
-    ));
+pub struct GamePlugin;
+
+impl Plugin for GamePlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins((
+            asteroids::AsteroidPlugin,
+            cloud::CloudPlugin,
+            detection::DetectionPlugin,
+            docking::DockingPlugin,
+            gravity::GravityPlugin,
+            health::HealthPlugin,
+            effect::EffectPlugin,
+            missile::MissilePlugin,
+            planet::PlanetPlugin,
+            gamestate::GameStatePlugin,
+            radar_camera::CameraPlugin,
+            playership::PlayershipPlugin,
+            spaceship::SpaceshipPlugin,
+            station::StationPlugin,
+        ));
+    }
 }
 
 #[derive(Component, Default)]

@@ -26,8 +26,8 @@ pub struct StationBundle {
     transform: Transform,
 }
 
-fn attach_observer(trigger: Trigger<OnAdd, Station>, mut commands: Commands) {
-    if let Ok(mut entity_command) = commands.get_entity(trigger.target()) {
+fn attach_observer(trigger: On<Add, Station>, mut commands: Commands) {
+    if let Ok(mut entity_command) = commands.get_entity(trigger.event_target()) {
         entity_command.observe(obs_station_collision);
     }
 }
@@ -47,22 +47,22 @@ fn new_station(
             mesh,
             material,
             RigidBody::Static,
-            Transform::from_xyz(-10., 0., RadarOrdering::ZPlanet.as_f32()),
+            Transform::from_xyz(-10., 0., RadarZOrdering::Planet.as_f32()),
         ))
         .id()
 }
 
 fn obs_station_collision(
-    trigger: Trigger<OnCollisionStart>,
+    trigger: On<CollisionStart>,
     station_query: Query<&Station>,
     mut ships_query: Query<(&mut LinearVelocity, &mut Health), With<Spaceship>>,
     // mut event: EventWriter<EventDocking>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
-    let station_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let station_entity = trigger.event_target();
+    let other_entity = trigger.collider1;
 
     if let Ok((vel, mut health)) = ships_query.get_mut(other_entity) {
         let name = &station_query.get(station_entity).unwrap().name;

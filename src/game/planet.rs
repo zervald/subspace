@@ -44,7 +44,7 @@ pub fn spawn_test_planet(
             MeshMaterial2d(materials.add(Color::from(BLUE_400))),
             GravitySource::default(),
             RigidBody::Static,
-            Transform::from_xyz(100., 100., RadarOrdering::ZPlanet.as_f32()),
+            Transform::from_xyz(100., 100., RadarZOrdering::Planet.as_f32()),
             children![(
                 Station {
                     name: "Pebble".into(),
@@ -53,22 +53,22 @@ pub fn spawn_test_planet(
                 Mesh2d(meshes.add(Circle::new(2.))),
                 MeshMaterial2d(materials.add(Color::from(GREEN))),
                 RigidBody::Static,
-                Transform::from_xyz(-50., 0., RadarOrdering::ZPlanet.as_f32()),
+                Transform::from_xyz(-50., 0., RadarZOrdering::Planet.as_f32()),
             )],
         ))
         .observe(obs_planet_collision);
 }
 
 fn obs_planet_collision(
-    trigger: Trigger<OnCollisionStart>,
+    trigger: On<CollisionStart>,
     planet_query: Query<&Planet>,
     mut query: Query<&mut Health>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
-    let planet_entity = trigger.target();
-    let other_entity = trigger.collider;
+    let planet_entity = trigger.event_target();
+    let other_entity = trigger.collider1;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
         let name = match planet_query.get(planet_entity) {

@@ -1,5 +1,5 @@
 use crate::common::state::AppState;
-use avian2d::prelude::ExternalForce;
+use avian2d::prelude::*;
 use bevy::prelude::*;
 
 const DEFAULT_REACH: f32 = 1000.;
@@ -54,7 +54,7 @@ fn apply_gravity(
                 info!(?vec_force);
                 commands
                     .entity(object)
-                    .try_insert(ExternalForce::new(vec_force).with_persistence(false));
+                    .try_insert(ConstantForce::new(vec_force.x, vec_force.y));
             }
         }
     }

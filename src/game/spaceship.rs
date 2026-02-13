@@ -3,7 +3,6 @@ use crate::game::gravity::GravityAffected;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
 use bevy::{color::palettes::css::*, prelude::*};
-// use log::info;
 
 const COLLISION_DAMAGE_FACTOR: f32 = 0.5;
 const DEFAULT_HEALTH: i32 = 100;
@@ -69,20 +68,20 @@ pub fn spawn_test_ennemy(
         MeshMaterial2d(materials.add(Color::from(RED))),
         PassiveSensor::default(),
         RigidBody::Dynamic,
-        Transform::from_xyz(50., 50., RadarOrdering::ZShips.as_f32()),
+        Transform::from_xyz(50., 50., RadarZOrdering::Ships.as_f32()),
     ));
 }
 
 #[allow(dead_code)]
 fn observer_collision(
-    trigger: Trigger<OnCollisionStart>,
+    trigger: On<CollisionStart>,
     mut ship_query: Query<(&LinearVelocity, &mut Health), With<Spaceship>>,
 ) {
-    if trigger.body.is_none() {
+    if trigger.body1.is_none() {
         return;
     }
-    let ship = trigger.target();
-    let other_entity = trigger.collider;
+    let ship = trigger.event_target();
+    let other_entity = trigger.collider1;
     if let Ok((velocity, mut health)) = ship_query.get_mut(ship) {
         let damage: i32 = (COLLISION_DAMAGE_FACTOR * velocity.length()).round() as i32;
         info!("SHIP COLLISION: {ship} collided with {other_entity} for {damage}");

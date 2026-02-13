@@ -6,8 +6,8 @@ const DETECTION_MIN: f32 = 0.01;
 pub struct SensorPlugin;
 impl Plugin for SensorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<EventDetection>();
-        app.add_event::<Ping>();
+        app.add_message::<EventDetection>();
+        app.add_message::<Ping>();
         app.add_systems(
             FixedUpdate,
             (passive_sensor).run_if(in_state(GameState::Cruising)),
@@ -44,7 +44,7 @@ impl Default for PassiveSensor {
 }
 
 // Events
-#[derive(Event)]
+#[derive(Message)]
 pub struct Ping {
     origin_entity: Entity,
     origin_sensor: ActiveSensor,
@@ -53,7 +53,7 @@ pub struct Ping {
 fn passive_sensor(
     p_sensor_query: Query<(Entity, &PassiveSensor)>,
     detection_query: Query<(Entity, &Emission)>,
-    mut event: EventWriter<EventDetection>,
+    mut event: MessageWriter<EventDetection>,
 ) {
     if detection_query.is_empty() || p_sensor_query.is_empty() {
         return;
@@ -84,7 +84,7 @@ fn passive_sensor(
 
 #[allow(dead_code, unused_variables)]
 fn sensor_ping(
-    mut event: EventReader<Ping>,
+    mut event: MessageReader<Ping>,
     p_sensor_query: Query<(Entity, &PassiveSensor)>,
     detection_query: Query<(Entity, &Emission)>,
 ) {

@@ -49,7 +49,7 @@ impl CloudBundle {
             .spawn((
                 Self {
                     cloud,
-                    transform: Transform::from_xyz(x, y, RadarOrdering::ZClouds.as_f32()),
+                    transform: Transform::from_xyz(x, y, RadarZOrdering::Clouds.as_f32()),
                 },
                 Visibility::Visible,
             ))
@@ -102,26 +102,26 @@ impl CloudColliderChild {
             collider: Collider::circle(DEFAULT_CIRCLE_RADIUS),
             mesh2d: Mesh2d(meshes.add(Circle::new(DEFAULT_CIRCLE_RADIUS))),
             mesh_material: MeshMaterial2d(materials.add(ColorMaterial::from_color(DEFAULT_COLOR))),
-            transform: Transform::from_xyz(x, y, z_ordering::RadarOrdering::ZClouds.as_f32()),
+            transform: Transform::from_xyz(x, y, z_ordering::RadarZOrdering::Clouds.as_f32()),
         }
     }
 }
 
 fn cloud_enter(
-    trigger: Trigger<OnCollisionStart>,
+    trigger: On<CollisionStart>,
     mut commands: Commands,
     collider_query: Query<&ChildOf, With<CloudPart>>,
     cloud_query: Query<&Cloud>,
     ships_query: Query<NameOrEntity, With<Spaceship>>,
 ) {
-    let cloud: Entity = match collider_query.get(trigger.target()) {
+    let cloud: Entity = match collider_query.get(trigger.event_target()) {
         Ok(c) if c.0 != Entity::PLACEHOLDER => c.0,
         _ => return,
     };
     let Ok(cloud_type) = cloud_query.get(cloud) else {
         return;
     };
-    let Ok(target) = ships_query.get(trigger.collider) else {
+    let Ok(target) = ships_query.get(trigger.collider1) else {
         return;
     };
 
@@ -137,11 +137,11 @@ fn cloud_enter(
 // TODO: find solution with lifetime,
 // maybe lifetime::event(T: Event) ?
 fn cloud_exit(
-    trigger: Trigger<OnCollisionEnd>,
+    trigger: On<CollisionEnd>,
     mut commands: Commands,
     cloud_query: Query<&EffectSource, With<Cloud>>,
 ) {
-    let effect_entity = match cloud_query.get(trigger.target()) {
+    let effect_entity = match cloud_query.get(trigger.event_target()) {
         Ok(e) => **e,
         Err(_) => return,
     };

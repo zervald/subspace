@@ -16,7 +16,6 @@ tracing = { version = "0.1", features = [
 ] }
 bevy_egui = "0.38"
 avian2d = "0.4"
-iyes_perf_ui = "0.5"
 
 [target.wasm32-unknown-unknown.dependencies]
 getrandom = { version = "0.3", features = ["wasm_js"] }

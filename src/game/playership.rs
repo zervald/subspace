@@ -58,7 +58,7 @@ pub fn spawn_playership(
         },
         Name::new("Playership"),
         FollowCamera,
-        Transform::from_xyz(0., 0., RadarOrdering::ZShips.as_f32()),
+        Transform::from_xyz(0., 0., RadarZOrdering::Ships.as_f32()),
     ));
 }
 
@@ -119,12 +119,12 @@ fn spaceship_rotation_control(
 fn spaceship_weapon_controls(
     query: Single<(&Transform, &LinearVelocity), With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut event: EventWriter<EventShootMissile>,
+    mut event: MessageWriter<EventShootMissile>,
     mut weapon_timer: ResMut<WeaponTimer>,
     time: Res<Time>,
 ) {
     weapon_timer.tick(time.delta());
-    if !weapon_timer.finished() {
+    if !weapon_timer.is_finished() {
         return;
     }
 

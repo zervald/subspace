@@ -6,11 +6,13 @@
 mod asset_tracking;
 mod audio;
 mod common;
+mod demo;
 #[cfg(feature = "dev")]
 mod dev_tools;
 mod game;
 mod menus;
 mod screens;
+mod test_scene;
 mod theme;
 
 use bevy::{asset::AssetMetaCheck, prelude::*};
@@ -47,13 +49,15 @@ impl Plugin for AppPlugin {
         // Add other plugins.
         app.add_plugins((
             asset_tracking::plugin,
-            audio::plugin,
-            game::plugin,
+            audio::AudioPlugin,
+            game::GamePlugin,
             #[cfg(feature = "dev")]
-            dev_tools::plugin,
-            menus::plugin,
+            dev_tools::DevToolsPlugin,
+            demo::plugin,
+            menus::MenusPlugin,
             screens::plugin,
             theme::plugin,
+            test_scene::TestScenePlugin,
         ));
 
         // Order new `AppSystems` variants by adding them here:

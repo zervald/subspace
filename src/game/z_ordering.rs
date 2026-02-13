@@ -1,15 +1,15 @@
 // z ordering
 // higher is in front
 #[derive(Debug)]
-pub enum RadarOrdering {
-    ZBackground = -1,
-    ZPlanet = 0,
-    ZShips = 1,
-    ZClouds = 2,
+pub enum RadarZOrdering {
+    Background = -1,
+    Planet = 0,
+    Ships = 1,
+    Clouds = 2,
 }
 
-impl RadarOrdering {
-    pub fn as_f32(self) -> f32 {
-        self as i32 as f32
+impl RadarZOrdering {
+    pub fn as_f32(&self) -> f32 {
+        self as *const _ as i32 as f32
     }
 }
