@@ -1,4 +1,4 @@
-use crate::common::state::AppState;
+use crate::screens::Screen;
 use bevy::prelude::*;
 
 #[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
@@ -14,15 +14,15 @@ pub struct GameStatePlugin;
 
 impl Plugin for GameStatePlugin {
     fn build(&self, app: &mut App) {
-        app.init_state::<GameState>()
-            .add_systems(
-                OnEnter(AppState::InGame),
-                |mut ns: ResMut<NextState<GameState>>| ns.set(GameState::Cruising),
-            )
-            .add_systems(OnEnter(GameState::Destroyed), transition_to_gameover);
+        app.init_state::<GameState>();
+        // app.add_systems(
+        //     OnEnter(Screen::Gameplay),
+        //     |mut ns: ResMut<NextState<GameState>>| ns.set(GameState::Cruising),
+        // );
+        app.add_systems(OnEnter(GameState::Destroyed), transition_to_title);
     }
 }
 
-fn transition_to_gameover(mut next_state: ResMut<NextState<AppState>>) {
-    next_state.set(AppState::GameOver);
+fn transition_to_title(mut next_screen: ResMut<NextState<Screen>>) {
+    next_screen.set(Screen::Title);
 }

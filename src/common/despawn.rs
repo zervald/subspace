@@ -1,4 +1,7 @@
-use crate::{common::state::AppState, game::GameEntity};
+use crate::{
+    game::{GameEntity, radar_camera::MainCamera},
+    screens::Screen,
+};
 use bevy::prelude::*;
 
 const DESPAWN_DISTANCE: f32 = 2000.0;
@@ -7,10 +10,10 @@ pub struct DespawnPlugin;
 
 impl Plugin for DespawnPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(AppState::GameOver), despawn_all_game_entities)
+        app.add_systems(OnExit(Screen::Gameplay), despawn_all_game_entities)
             .add_systems(
                 Update,
-                despawn_far_away_entities.run_if(in_state(AppState::InGame)),
+                despawn_far_away_entities.run_if(in_state(Screen::Gameplay)),
             );
     }
 }
@@ -26,7 +29,10 @@ fn despawn_far_away_entities(mut commands: Commands, query: Query<(Entity, &Glob
     }
 }
 
-fn despawn_all_game_entities(mut commands: Commands, query: Query<Entity, With<GameEntity>>) {
+fn despawn_all_game_entities(
+    mut commands: Commands,
+    query: Query<Entity, (With<GameEntity>, Without<MainCamera>)>,
+) {
     query.iter().for_each(|entity| {
         commands.entity(entity).try_despawn();
     });

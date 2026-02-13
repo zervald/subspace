@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use bevy::prelude::*;
 
-use crate::{common::state::AppState, game::prelude::GameState};
+use crate::{game::prelude::GameState, screens::Screen};
 
 #[derive(Component, Debug)]
 pub enum Lifetime {
@@ -122,7 +122,7 @@ impl Plugin for LifetimePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             FixedUpdate,
-            update_lifetime.run_if(in_state(AppState::InGame)),
+            update_lifetime.run_if(in_state(Screen::Gameplay)),
         );
     }
 }

@@ -6,16 +6,18 @@
 mod asset_tracking;
 mod audio;
 mod common;
-mod demo;
+mod dev_scene;
 #[cfg(feature = "dev")]
 mod dev_tools;
 mod game;
 mod menus;
 mod screens;
-mod test_scene;
 mod theme;
 
+use avian2d::{PhysicsPlugins, dynamics::integrator::Gravity};
 use bevy::{asset::AssetMetaCheck, prelude::*};
+
+use crate::game::radar_camera::MainCamera;
 
 fn main() -> AppExit {
     App::new().add_plugins(AppPlugin).run()
@@ -45,19 +47,20 @@ impl Plugin for AppPlugin {
                     ..default()
                 }),
         );
+        app.add_plugins(PhysicsPlugins::default())
+            .insert_resource(Gravity::ZERO);
 
         // Add other plugins.
         app.add_plugins((
             asset_tracking::plugin,
             audio::AudioPlugin,
-            game::GamePlugin,
+            common::CommonPlugin,
             #[cfg(feature = "dev")]
             dev_tools::DevToolsPlugin,
-            demo::plugin,
-            menus::MenusPlugin,
+            game::plugin,
+            menus::plugin,
             screens::plugin,
             theme::plugin,
-            test_scene::TestScenePlugin,
         ));
 
         // Order new `AppSystems` variants by adding them here:
@@ -102,5 +105,5 @@ struct Pause(pub bool);
 struct PausableSystems;
 
 fn spawn_camera(mut commands: Commands) {
-    commands.spawn((Name::new("Camera"), Camera2d));
+    commands.spawn((Name::new("Camera"), Camera2d, MainCamera));
 }

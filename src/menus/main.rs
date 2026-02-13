@@ -34,11 +34,12 @@ fn enter_loading_or_gameplay_screen(
     resource_handles: Res<ResourceHandles>,
     mut next_screen: ResMut<NextState<Screen>>,
 ) {
-    if resource_handles.is_all_done() {
-        next_screen.set(Screen::Gameplay);
-    } else {
-        next_screen.set(Screen::Loading);
-    }
+    // if resource_handles.is_all_done() {
+    //     next_screen.set(Screen::Gameplay);
+    // } else {
+    //     next_screen.set(Screen::Loading);
+    // }
+    next_screen.set(Screen::Gameplay);
 }
 
 fn open_settings_menu(_: On<Pointer<Click>>, mut next_menu: ResMut<NextState<Menu>>) {

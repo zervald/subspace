@@ -20,7 +20,7 @@ pub struct Effect {
 pub type EffectEntity = Entity;
 
 // TODO: system transform AddEffectEvent -> EffectEntity
-fn catch_add_effect_event(mut event_reader: MessageReader<EventAddEffect>) {}
+fn catch_add_effect_event(_event_reader: MessageReader<EventAddEffect>) {}
 
 #[derive(Component, Deref, DerefMut)]
 pub struct EffectSource {

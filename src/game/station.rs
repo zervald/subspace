@@ -64,7 +64,7 @@ fn obs_station_collision(
     let station_entity = trigger.event_target();
     let other_entity = trigger.collider1;
 
-    if let Ok((vel, mut health)) = ships_query.get_mut(other_entity) {
+    if let Ok((vel, _health)) = ships_query.get_mut(other_entity) {
         let name = &station_query.get(station_entity).unwrap().name;
         info!("COLLISION: {other_entity} collided with station: {name}");
         if vel.length() < MAX_VEL_DOCKING {

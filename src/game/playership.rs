@@ -1,7 +1,8 @@
 use crate::game::missile::EventShootMissile;
 use crate::game::prelude::*;
-use crate::game::radar_camera::FollowCamera;
+use crate::game::radar_camera::FlagCameraFollow;
 use crate::game::spaceship::*;
+use crate::{AppSystems, PausableSystems};
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
@@ -32,7 +33,9 @@ impl Plugin for PlayershipPlugin {
                 spaceship_weapon_controls,
             )
                 .chain()
-                .run_if(in_state(GameState::Cruising)),
+                .run_if(in_state(GameState::Cruising))
+                .in_set(AppSystems::RecordInput)
+                .in_set(PausableSystems),
         )
         // .add_systems(
         //     FixedUpdate,
@@ -45,21 +48,19 @@ impl Plugin for PlayershipPlugin {
     }
 }
 
-pub fn spawn_playership(
-    mut commands: Commands,
-    meshes: ResMut<Assets<Mesh>>,
-    materials: ResMut<Assets<ColorMaterial>>,
-) {
-    // let camera = spawn_camera(&mut commands);
-    let id = spawn_spaceship(&mut commands, meshes, materials);
-    commands.entity(id).insert((
+pub fn playership(
+    meshes: &mut ResMut<Assets<Mesh>>,
+    materials: &mut ResMut<Assets<ColorMaterial>>,
+) -> impl Bundle {
+    (
+        spaceship(meshes, materials),
         PlayerShip {
             name: "Serenity".into(),
         },
         Name::new("Playership"),
-        FollowCamera,
-        Transform::from_xyz(0., 0., RadarZOrdering::Ships.as_f32()),
-    ));
+        FlagCameraFollow,
+        Transform::from_xyz(0., 0., 0.),
+    )
 }
 
 fn spaceship_propulsion_control(
@@ -106,14 +107,15 @@ fn spaceship_rotation_control(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
 ) {
-    let mut rotation = 0.0;
+    let delta_secs = time.delta_secs();
+    let mut rotation_direction = 0.0;
     if keyboard_input.pressed(KeyCode::KeyD) {
-        rotation = -ROTATION_SPEED;
+        rotation_direction = -1.;
     } else if keyboard_input.pressed(KeyCode::KeyA) {
-        rotation = ROTATION_SPEED;
+        rotation_direction = 1.;
     }
 
-    angular.0 += rotation * time.delta_secs();
+    angular.0 += (ROTATION_SPEED * rotation_direction * delta_secs);
 }
 
 fn spaceship_weapon_controls(

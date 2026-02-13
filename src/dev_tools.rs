@@ -23,6 +23,6 @@ impl Plugin for DevToolsPlugin {
 
 const TOGGLE_KEY: KeyCode = KeyCode::Backquote;
 
-fn toggle_debug_ui(mut options: ResMut<UiDebugOptions>) {
+fn toggle_debug_ui(mut options: ResMut<GlobalUiDebugOptions>) {
     options.toggle();
 }

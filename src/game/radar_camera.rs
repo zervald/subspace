@@ -1,32 +1,30 @@
-use crate::game::prelude::*;
+use crate::{AppSystems, PausableSystems};
 use bevy::prelude::*;
 
 #[derive(Component)]
-#[require(Camera2d, GameEntity)]
+#[require(Camera2d)]
 pub struct MainCamera;
 
 #[derive(Component)]
-pub struct FollowCamera;
+pub struct FlagCameraFollow;
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
+        app.add_systems(Update, camera_follow.in_set(PausableSystems));
         app.add_systems(
-            PostUpdate,
-            camera_follow.run_if(in_state(GameState::Cruising)),
+            Update,
+            zoom_camera
+                .in_set(AppSystems::RecordInput)
+                .in_set(PausableSystems),
         );
-        app.add_systems(PreUpdate, zoom_camera.run_if(in_state(GameState::Cruising)));
     }
-}
-
-pub fn spawn_camera(mut commands: Commands) {
-    commands.spawn(MainCamera);
 }
 
 fn camera_follow(
     mut camera_query: Single<&mut Transform, With<MainCamera>>,
-    follow_query: Single<&Transform, (With<FollowCamera>, Without<MainCamera>)>,
+    follow_query: Single<&Transform, (With<FlagCameraFollow>, Without<MainCamera>)>,
 ) {
     // TODO: Make screen refresh effect
     camera_query.translation = follow_query.translation;

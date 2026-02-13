@@ -39,7 +39,7 @@ pub(super) fn plugin(app: &mut App) {
     app.add_systems(
         Update,
         enter_title_screen
-            .run_if(input_just_pressed(KeyCode::Escape).and(in_state(Screen::Splash))),
+            .run_if(input_just_pressed(KeyCode::Escape).and_then(in_state(Screen::Splash))),
     );
 }
 

@@ -1,4 +1,4 @@
-use crate::common::state::AppState;
+use crate::screens::Screen;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
@@ -29,7 +29,7 @@ impl Plugin for GravityPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             FixedUpdate,
-            apply_gravity.run_if(in_state(AppState::InGame).and(|| GRAVITY_ENABLED)),
+            apply_gravity.run_if(in_state(Screen::Gameplay).and_then(|| GRAVITY_ENABLED)),
         );
     }
 }

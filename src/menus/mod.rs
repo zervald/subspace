@@ -7,19 +7,15 @@ mod settings;
 
 use bevy::prelude::*;
 
-pub struct MenusPlugin;
+pub(super) fn plugin(app: &mut App) {
+    app.init_state::<Menu>();
 
-impl Plugin for MenusPlugin {
-    fn build(&self, app: &mut App) {
-        app.init_state::<Menu>();
-
-        app.add_plugins((
-            credits::plugin,
-            main::plugin,
-            settings::plugin,
-            pause::plugin,
-        ));
-    }
+    app.add_plugins((
+        credits::plugin,
+        main::plugin,
+        settings::plugin,
+        pause::plugin,
+    ));
 }
 
 #[derive(States, Copy, Clone, Eq, PartialEq, Hash, Debug, Default)]

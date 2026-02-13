@@ -3,7 +3,7 @@ use bevy::prelude::*;
 
 pub struct ContactPlugin;
 impl Plugin for ContactPlugin {
-    fn build(&self, app: &mut App) {
+    fn build(&self, _app: &mut App) {
         // app.add_systems(
         //     Update,
         //     ().run_if(in_state(GameState::Cruising)),

@@ -26,28 +26,25 @@ pub struct ShipShield {
     pub active: bool,
 }
 
-pub fn spawn_spaceship(
-    commands: &mut Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
-) -> Entity {
+pub fn spaceship(
+    meshes: &mut ResMut<Assets<Mesh>>,
+    materials: &mut ResMut<Assets<ColorMaterial>>,
+) -> impl Bundle {
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
-    commands
-        .spawn((
-            Spaceship,
-            AngularDamping(ROTATION_DAMPENING),
-            Collider::from(shape),
-            CollisionEventsEnabled,
-            GravityAffected,
-            Health(DEFAULT_HEALTH),
-            MaxAngularSpeed(MAX_ANGULAR_SPEED),
-            Mesh2d(meshes.add(shape)),
-            MeshMaterial2d(materials.add(Color::from(BLUE))),
-            PassiveSensor::default(),
-            RigidBody::Dynamic,
-        ))
-        // .observe(observer_collision())
-        .id()
+    (
+        Spaceship,
+        AngularDamping(ROTATION_DAMPENING),
+        Collider::from(shape),
+        CollisionEventsEnabled,
+        GravityAffected,
+        Health(DEFAULT_HEALTH),
+        MaxAngularSpeed(MAX_ANGULAR_SPEED),
+        Mesh2d(meshes.add(shape)),
+        MeshMaterial2d(materials.add(Color::from(BLUE))),
+        PassiveSensor::default(),
+        RigidBody::Dynamic,
+    )
+    // .observe(observer_collision())
 }
 
 pub fn spawn_test_ennemy(

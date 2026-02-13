@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::state::AppState;
+use crate::screens::Screen;
 
 #[derive(Component, Default, Debug, Deref, DerefMut)]
 pub struct Health(pub i32);
@@ -11,7 +11,7 @@ impl Plugin for HealthPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             FixedUpdate,
-            despawn_dead_entities.run_if(in_state(AppState::InGame)),
+            despawn_dead_entities.run_if(in_state(Screen::Gameplay)),
         );
     }
 }
