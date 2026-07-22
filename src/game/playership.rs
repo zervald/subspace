@@ -26,22 +26,21 @@ impl Plugin for PlayershipPlugin {
         app.add_systems(
             Update,
             (
-                spaceship_propulsion_control,
-                spaceship_rotation_control,
+                spaceship_propulsion_controls,
+                spaceship_rotation_controls,
                 // spaceship_shield_controls,
-                spaceship_stop,
+                spaceship_stop_controls,
                 spaceship_weapon_controls,
             )
-                .chain()
                 .run_if(in_state(GameState::Cruising))
                 .in_set(AppSystems::RecordInput)
                 .in_set(PausableSystems),
-        )
+        );
         // .add_systems(
         //     FixedUpdate,
         //     playership_destroyed.run_if(in_state(GameState::Cruising)),
         // )
-        .insert_resource(WeaponTimer(Timer::from_seconds(
+        app.insert_resource(WeaponTimer(Timer::from_seconds(
             WEAPON_FIRE_INTERVAL,
             TimerMode::Repeating,
         )));
@@ -82,7 +81,7 @@ pub fn playership(asset: &PlayershipAssets) -> impl Bundle {
     )
 }
 
-fn spaceship_propulsion_control(
+fn spaceship_propulsion_controls(
     query: Single<(&mut LinearVelocity, &Transform), With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
@@ -99,7 +98,7 @@ fn spaceship_propulsion_control(
     linear_v.0 += direction.xy() * accel * time.delta_secs();
 }
 
-fn spaceship_stop(
+fn spaceship_stop_controls(
     query: Single<(&mut LinearVelocity, &mut Transform), With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
@@ -121,20 +120,21 @@ fn spaceship_stop(
     }
 }
 
-fn spaceship_rotation_control(
+fn spaceship_rotation_controls(
     mut angular: Single<&mut AngularVelocity, With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
 ) {
     let delta_secs = time.delta_secs();
-    let mut rotation_direction = 0.0;
-    if keyboard_input.pressed(KeyCode::KeyD) {
-        rotation_direction = -1.;
+    let scalar = if keyboard_input.pressed(KeyCode::KeyD) {
+        -ROTATION_SPEED
     } else if keyboard_input.pressed(KeyCode::KeyA) {
-        rotation_direction = 1.;
-    }
+        ROTATION_SPEED
+    } else {
+        0.
+    };
 
-    angular.0 += ROTATION_SPEED * rotation_direction * delta_secs;
+    angular.0 += scalar * delta_secs;
 }
 
 fn spaceship_weapon_controls(
