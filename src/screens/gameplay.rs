@@ -9,21 +9,11 @@ pub(super) fn plugin(app: &mut App) {
     // Toggle pause on key press.
     app.add_systems(
         Update,
-        (
-            (pause, spawn_pause_overlay, open_pause_menu).run_if(
-                in_state(Screen::Gameplay)
-                    .and_then(in_state(Menu::None))
-                    .and_then(
-                        input_just_pressed(KeyCode::KeyP)
-                            .or_else(input_just_pressed(KeyCode::Escape)),
-                    ),
-            ),
-            close_menu.run_if(
-                in_state(Screen::Gameplay)
-                    .and_then(not(in_state(Menu::None)))
-                    .and_then(input_just_pressed(KeyCode::KeyP)),
-            ),
-        ),
+        ((pause, spawn_pause_overlay, open_pause_menu).run_if(
+            in_state(Screen::Gameplay)
+                .and_then(in_state(Menu::None))
+                .and_then(input_just_pressed(KeyCode::Escape)),
+        ),),
     );
     app.add_systems(OnExit(Screen::Gameplay), (close_menu, unpause));
     app.add_systems(

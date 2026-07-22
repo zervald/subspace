@@ -1,5 +1,4 @@
 use crate::{
-    common::prelude::Lifetime,
     game::{playership::playership, prelude::*},
     screens::Screen,
 };
@@ -19,22 +18,14 @@ pub fn spawn_test_level(
         DespawnOnExit(Screen::Gameplay),
         children![
             // Cloud test
-            // CloudBundle::spawn(
-            //     Cloud::Thunderstorm,
-            //     -10.0,
-            //     -10.0,
-            //     &mut commands,
-            //     &mut meshes,
-            //     &mut materials,
-            // ),
             (playership(&mut meshes, &mut materials)),
-            // (
-            //     Name::new("Lifetime state"),
-            //     Mesh2d(meshes.add(shape)),
-            //     MeshMaterial2d(materials.add(Color::from(BLUE))),
-            //     Transform::from_xyz(1., -5., RadarZOrdering::Ships.as_f32()),
-            //     // Lifetime::from(GameState::Cruising),
-            // ),
+            (
+                Name::new("Lifetime state"),
+                Mesh2d(meshes.add(shape)),
+                MeshMaterial2d(materials.add(Color::from(BLUE))),
+                Transform::from_xyz(1., -5., RadarZOrdering::Ships.as_f32()),
+                // Lifetime::from(GameState::Cruising),
+            ),
             (
                 Name::new("Lifetime timer"),
                 Mesh2d(meshes.add(shape)),
