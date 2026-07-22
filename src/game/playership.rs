@@ -16,9 +16,7 @@ const WEAPON_FIRE_INTERVAL: f32 = 0.10; // per seconds
 pub struct WeaponTimer(Timer);
 
 #[derive(Component, Debug)]
-pub struct PlayerShip {
-    pub name: String,
-}
+pub struct PlayerShip;
 
 pub struct PlayershipPlugin;
 impl Plugin for PlayershipPlugin {
@@ -55,10 +53,8 @@ pub fn playership(
     let z = RadarZOrdering::Ships.z_order();
     (
         spaceship(meshes, materials),
-        PlayerShip {
-            name: "Serenity".into(),
-        },
-        Name::new("Playership"),
+        PlayerShip,
+        Name::new("Serenity"),
         CameraFollowMark,
         Transform::from_xyz(0., 0., z),
     )
