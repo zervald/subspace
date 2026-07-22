@@ -23,10 +23,6 @@ impl From<i32> for Health {
 }
 
 impl Health {
-    pub fn new(value: i32) -> Health {
-        Self(value)
-    }
-
     pub fn damage(&mut self, amount: i32) {
         self.0 -= amount;
     }
