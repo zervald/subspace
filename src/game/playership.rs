@@ -115,7 +115,7 @@ fn spaceship_rotation_control(
         rotation_direction = 1.;
     }
 
-    angular.0 += (ROTATION_SPEED * rotation_direction * delta_secs);
+    angular.0 += ROTATION_SPEED * rotation_direction * delta_secs;
 }
 
 fn spaceship_weapon_controls(
