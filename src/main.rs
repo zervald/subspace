@@ -45,6 +45,11 @@ impl Plugin for AppPlugin {
                     }
                     .into(),
                     ..default()
+                })
+                .set(bevy::log::LogPlugin {
+                    // level: bevy::log::Level::TRACE,
+                    // filter: "wgpu=warn,bevy_ecs=info".to_string(),
+                    ..default()
                 }),
         );
         // TODO: Physics as PausableSystem
