@@ -49,7 +49,7 @@ impl CloudBundle {
             .spawn((
                 Self {
                     cloud,
-                    transform: Transform::from_xyz(x, y, RadarZOrdering::Clouds.as_f32()),
+                    transform: Transform::from_xyz(x, y, RadarZOrdering::Clouds.z_order()),
                 },
                 Visibility::Visible,
             ))
@@ -102,7 +102,7 @@ impl CloudColliderChild {
             collider: Collider::circle(DEFAULT_CIRCLE_RADIUS),
             mesh2d: Mesh2d(meshes.add(Circle::new(DEFAULT_CIRCLE_RADIUS))),
             mesh_material: MeshMaterial2d(materials.add(ColorMaterial::from_color(DEFAULT_COLOR))),
-            transform: Transform::from_xyz(x, y, z_ordering::RadarZOrdering::Clouds.as_f32()),
+            transform: Transform::from_xyz(x, y, z_ordering::RadarZOrdering::Clouds.z_order()),
         }
     }
 }

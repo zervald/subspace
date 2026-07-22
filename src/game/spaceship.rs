@@ -65,7 +65,7 @@ pub fn spawn_test_ennemy(
         MeshMaterial2d(materials.add(Color::from(RED))),
         PassiveSensor::default(),
         RigidBody::Dynamic,
-        Transform::from_xyz(50., 50., RadarZOrdering::Ships.as_f32()),
+        Transform::from_xyz(50., 50., RadarZOrdering::Ships.z_order()),
     ));
 }
 

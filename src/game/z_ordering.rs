@@ -6,11 +6,13 @@ pub enum RadarZOrdering {
     Planet = 0,
     Ships = 1,
     Clouds = 2,
-    Camera,
+    Camera = 100, // max
 }
 
 impl RadarZOrdering {
-    pub fn as_f32(&self) -> f32 {
-        self as *const _ as i32 as f32
+    /// Returns "0.z", z being the interger value of this [`RadarZOrdering`].
+    pub fn z_order(self) -> f32 {
+        let f = self as i32 as f32;
+        0.01 * f
     }
 }

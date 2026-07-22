@@ -52,6 +52,7 @@ pub fn playership(
     meshes: &mut ResMut<Assets<Mesh>>,
     materials: &mut ResMut<Assets<ColorMaterial>>,
 ) -> impl Bundle {
+    let z = RadarZOrdering::Ships.z_order();
     (
         spaceship(meshes, materials),
         PlayerShip {
@@ -59,7 +60,7 @@ pub fn playership(
         },
         Name::new("Playership"),
         FlagCameraFollow,
-        Transform::from_xyz(0., 0., 0.),
+        Transform::from_xyz(0., 0., z),
     )
 }
 

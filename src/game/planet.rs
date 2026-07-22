@@ -44,7 +44,7 @@ pub fn spawn_test_planet(
             MeshMaterial2d(materials.add(Color::from(BLUE_400))),
             GravitySource::default(),
             RigidBody::Static,
-            Transform::from_xyz(100., 100., RadarZOrdering::Planet.as_f32()),
+            Transform::from_xyz(100., 100., RadarZOrdering::Planet.z_order()),
             children![(
                 Station {
                     name: "Pebble".into(),
@@ -53,7 +53,7 @@ pub fn spawn_test_planet(
                 Mesh2d(meshes.add(Circle::new(2.))),
                 MeshMaterial2d(materials.add(Color::from(GREEN))),
                 RigidBody::Static,
-                Transform::from_xyz(-50., 0., RadarZOrdering::Planet.as_f32()),
+                Transform::from_xyz(-50., 0., RadarZOrdering::Planet.z_order()),
             )],
         ))
         .observe(obs_planet_collision);

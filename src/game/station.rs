@@ -47,7 +47,7 @@ fn new_station(
             mesh,
             material,
             RigidBody::Static,
-            Transform::from_xyz(-10., 0., RadarZOrdering::Planet.as_f32()),
+            Transform::from_xyz(-10., 0., RadarZOrdering::Planet.z_order()),
         ))
         .id()
 }

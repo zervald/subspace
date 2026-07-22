@@ -23,7 +23,7 @@ pub fn spawn_test_level(
                 Name::new("Lifetime state"),
                 Mesh2d(meshes.add(shape)),
                 MeshMaterial2d(materials.add(Color::from(BLUE))),
-                Transform::from_xyz(1., -5., RadarZOrdering::Ships.as_f32()),
+                Transform::from_xyz(1., -5., RadarZOrdering::Ships.z_order()),
                 // Lifetime::from(GameState::Cruising),
             ),
             (
