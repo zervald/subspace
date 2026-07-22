@@ -26,10 +26,7 @@ pub struct ShipShield {
     pub active: bool,
 }
 
-pub fn spaceship(
-    meshes: &mut ResMut<Assets<Mesh>>,
-    materials: &mut ResMut<Assets<ColorMaterial>>,
-) -> impl Bundle {
+pub fn spaceship(mesh: Handle<Mesh>, material: Handle<ColorMaterial>) -> impl Bundle {
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     (
         Spaceship,
@@ -39,8 +36,8 @@ pub fn spaceship(
         GravityAffected,
         Health(DEFAULT_HEALTH),
         MaxAngularSpeed(MAX_ANGULAR_SPEED),
-        Mesh2d(meshes.add(shape)),
-        MeshMaterial2d(materials.add(Color::from(BLUE))),
+        Mesh2d(mesh),
+        MeshMaterial2d(material),
         PassiveSensor::default(),
         RigidBody::Dynamic,
     )

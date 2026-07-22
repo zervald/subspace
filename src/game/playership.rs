@@ -4,7 +4,7 @@ use crate::game::radar_camera::CameraFollowMark;
 use crate::game::spaceship::*;
 use crate::{AppSystems, PausableSystems};
 use avian2d::prelude::*;
-use bevy::prelude::*;
+use bevy::{color, prelude::*};
 
 const FULL_STOP_THRESHOLD: f32 = 10.;
 const PROPULSION_SPEED: f32 = 50.0;
@@ -21,6 +21,8 @@ pub struct PlayerShip;
 pub struct PlayershipPlugin;
 impl Plugin for PlayershipPlugin {
     fn build(&self, app: &mut App) {
+        app.init_resource::<PlayershipAssets>();
+
         app.add_systems(
             Update,
             (
@@ -46,13 +48,33 @@ impl Plugin for PlayershipPlugin {
     }
 }
 
-pub fn playership(
-    meshes: &mut ResMut<Assets<Mesh>>,
-    materials: &mut ResMut<Assets<ColorMaterial>>,
-) -> impl Bundle {
+#[derive(Resource, Asset, Clone, Reflect)]
+#[reflect(Resource)]
+pub struct PlayershipAssets {
+    #[dependency]
+    mesh: Handle<Mesh>,
+    #[dependency]
+    material: Handle<ColorMaterial>,
+}
+
+impl FromWorld for PlayershipAssets {
+    fn from_world(world: &mut World) -> Self {
+        let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
+        let mut meshes = world.get_resource_mut::<Assets<Mesh>>().unwrap();
+        let mesh_handle = meshes.add(shape);
+        let mut materials = world.get_resource_mut::<Assets<ColorMaterial>>().unwrap();
+        let mat_handle = materials.add(Color::from(color::palettes::tailwind::BLUE_600));
+        Self {
+            mesh: mesh_handle,
+            material: mat_handle,
+        }
+    }
+}
+
+pub fn playership(asset: &PlayershipAssets) -> impl Bundle {
     let z = RadarZOrdering::Ships.z_order();
     (
-        spaceship(meshes, materials),
+        spaceship(asset.mesh.clone(), asset.material.clone()),
         PlayerShip,
         Name::new("Serenity"),
         CameraFollowMark,
