@@ -6,7 +6,7 @@ pub enum GameState {
     #[default]
     Cruising,
     Docking,
-    Jumping,
+    // Jumping,
     Destroyed,
 }
 
