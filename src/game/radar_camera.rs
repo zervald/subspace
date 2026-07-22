@@ -6,7 +6,7 @@ use bevy::prelude::*;
 pub struct MainCamera;
 
 #[derive(Component)]
-pub struct FlagCameraFollow;
+pub struct CameraFollowMark;
 
 pub struct CameraPlugin;
 
@@ -24,11 +24,11 @@ impl Plugin for CameraPlugin {
 
 fn camera_follow(
     mut main_camera: Single<&mut Transform, With<MainCamera>>,
-    followe: Single<&Transform, (With<FlagCameraFollow>, Without<MainCamera>)>,
+    followe: Single<&Transform, (With<CameraFollowMark>, Without<MainCamera>)>,
 ) {
     // TODO: Make screen refresh effect
     let (x, y) = (followe.translation.x, followe.translation.y);
-    main_camera.translation = vec3(x, y, 0.);
+    main_camera.translation = vec3(x, y, 1.);
 }
 
 fn zoom_camera(

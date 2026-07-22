@@ -1,6 +1,6 @@
 use crate::game::missile::EventShootMissile;
 use crate::game::prelude::*;
-use crate::game::radar_camera::FlagCameraFollow;
+use crate::game::radar_camera::CameraFollowMark;
 use crate::game::spaceship::*;
 use crate::{AppSystems, PausableSystems};
 use avian2d::prelude::*;
@@ -59,7 +59,7 @@ pub fn playership(
             name: "Serenity".into(),
         },
         Name::new("Playership"),
-        FlagCameraFollow,
+        CameraFollowMark,
         Transform::from_xyz(0., 0., z),
     )
 }
