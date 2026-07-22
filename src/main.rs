@@ -47,6 +47,7 @@ impl Plugin for AppPlugin {
                     ..default()
                 }),
         );
+        // TODO: Physics as PausableSystem
         app.add_plugins(PhysicsPlugins::default())
             .insert_resource(Gravity::ZERO);
 

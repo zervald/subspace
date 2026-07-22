@@ -6,6 +6,7 @@ pub enum RadarZOrdering {
     Planet = 0,
     Ships = 1,
     Clouds = 2,
+    Camera,
 }
 
 impl RadarZOrdering {

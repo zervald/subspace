@@ -4,14 +4,14 @@ use bevy::{
     dev_tools::states::log_transitions, input::common_conditions::input_just_pressed, prelude::*,
 };
 
-use crate::screens::Screen;
+use crate::game::gamestate::GameState;
 
 pub struct DevToolsPlugin;
 
 impl Plugin for DevToolsPlugin {
     fn build(&self, app: &mut App) {
         // Log `Screen` state transitions.
-        app.add_systems(Update, log_transitions::<Screen>);
+        app.add_systems(Update, log_transitions::<GameState>);
 
         // Toggle the debug overlay for UI.
         app.add_systems(
