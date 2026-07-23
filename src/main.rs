@@ -2,6 +2,8 @@
 #![cfg_attr(bevy_lint, feature(register_tool), register_tool(bevy))]
 // Disable console on Windows for non-dev builds.
 #![cfg_attr(not(feature = "dev"), windows_subsystem = "windows")]
+// NOTE: Allow dead_code during early developement
+#![allow(dead_code)]
 
 mod asset_tracking;
 mod audio;

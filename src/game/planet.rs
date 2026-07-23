@@ -11,9 +11,7 @@ const SIZE_RADIUS: f32 = 10.;
 
 #[derive(Component, Debug)]
 #[require(GameEntity, CollisionEventsEnabled, RigidBody::Static)]
-pub struct Planet {
-    name: String,
-}
+pub struct Planet;
 
 pub struct PlanetPlugin;
 
@@ -36,9 +34,8 @@ pub fn spawn_test_planet(
 
     commands
         .spawn((
-            Planet {
-                name: "Rock".into(),
-            },
+            Name::new("Rock"),
+            Planet,
             Collider::circle(SIZE_RADIUS),
             Mesh2d(meshes.add(Circle::new(SIZE_RADIUS))),
             MeshMaterial2d(materials.add(Color::from(BLUE_400))),
@@ -61,8 +58,8 @@ pub fn spawn_test_planet(
 
 fn obs_planet_collision(
     trigger: On<CollisionStart>,
-    planet_query: Query<&Planet>,
-    mut query: Query<&mut Health>,
+    planet_query: Query<&Name, (With<CollisionEventsEnabled>, With<Planet>)>,
+    mut query: Query<&mut Health, With<CollisionEventsEnabled>>,
 ) {
     if trigger.body1.is_none() {
         return;
@@ -71,13 +68,13 @@ fn obs_planet_collision(
     let other_entity = trigger.collider1;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
-        let name = match planet_query.get(planet_entity) {
-            Ok(p) => p.name.clone(),
-            Err(_) => String::from("No Name"),
+        let name: String = match planet_query.get(planet_entity) {
+            Ok(n) => n.to_string(),
+            Err(_) => "No name".into(),
         };
-        debug!("PLANET COLLISION: {other_entity} collided with {name}");
+        info!("PLANET COLLISION: {other_entity} collided with planet {name}");
         **health = 0;
-    }
+    };
 }
 
 #[allow(dead_code)]

@@ -4,6 +4,16 @@ use bevy::prelude::*;
 
 use crate::{game::prelude::GameState, screens::Screen};
 
+pub struct LifetimePlugin;
+impl Plugin for LifetimePlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            FixedUpdate,
+            update_lifetime.run_if(in_state(Screen::Gameplay)),
+        );
+    }
+}
+
 #[derive(Component, Debug)]
 pub enum Lifetime {
     Timer(Timer),
@@ -114,15 +124,5 @@ pub fn update_lifetime(
         if commands.get_entity(*entity_watched).is_err() {
             commands.entity(entity).try_despawn()
         };
-    }
-}
-
-pub struct LifetimePlugin;
-impl Plugin for LifetimePlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(
-            FixedUpdate,
-            update_lifetime.run_if(in_state(Screen::Gameplay)),
-        );
     }
 }

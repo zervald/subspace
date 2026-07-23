@@ -18,6 +18,9 @@ pub struct WeaponTimer(Timer);
 #[derive(Component, Debug)]
 pub struct PlayerShip;
 
+#[derive(SystemSet, Debug, Clone, Copy, Eq, PartialEq, Hash, PartialOrd, Ord)]
+pub struct CruiseSystems;
+
 pub struct PlayershipPlugin;
 impl Plugin for PlayershipPlugin {
     fn build(&self, app: &mut App) {
@@ -32,10 +35,13 @@ impl Plugin for PlayershipPlugin {
                 spaceship_stop_controls,
                 spaceship_weapon_controls,
             )
-                .run_if(in_state(GameState::Cruising))
                 .in_set(AppSystems::RecordInput)
-                .in_set(PausableSystems),
+                .in_set(PausableSystems)
+                .in_set(CruiseSystems),
         );
+
+        app.configure_sets(Update, CruiseSystems.run_if(in_state(GameState::Cruising)));
+
         // .add_systems(
         //     FixedUpdate,
         //     playership_destroyed.run_if(in_state(GameState::Cruising)),
