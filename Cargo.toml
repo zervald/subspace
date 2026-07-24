@@ -27,6 +27,8 @@ dev = [
     "bevy/dynamic_linking",
     "bevy/bevy_dev_tools",
     "bevy/bevy_ui_debug",
+    # mostly just for the observe() helper fn
+    "bevy/bevy_ui_widgets",
     # Improve error messages coming from Bevy
     "bevy/track_location",
     # debug informations
