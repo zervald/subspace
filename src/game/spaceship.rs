@@ -74,8 +74,8 @@ fn observer_collision(
     if trigger.body1.is_none() {
         return;
     }
-    let ship = trigger.event_target();
-    let other_entity = trigger.collider1;
+    let ship = trigger.collider1;
+    let other_entity = trigger.collider2;
     if let Ok((velocity, mut health)) = ship_query.get_mut(ship) {
         let damage: i32 = (COLLISION_DAMAGE_FACTOR * velocity.length()).round() as i32;
         info!("SHIP COLLISION: {ship} collided with {other_entity} for {damage}");
