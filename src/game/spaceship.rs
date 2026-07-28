@@ -2,7 +2,7 @@ use crate::game::detection::sensor::*;
 use crate::game::gravity::GravityAffected;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
-use bevy::{color::palettes::css::*, prelude::*};
+use bevy::{color::palettes::css::*, prelude::*, ui_widgets::observe};
 
 const COLLISION_DAMAGE_FACTOR: f32 = 0.5;
 const DEFAULT_HEALTH: i32 = 100;
@@ -41,8 +41,9 @@ pub fn spaceship(mesh: Handle<Mesh>, material: Handle<ColorMaterial>) -> impl Bu
         MeshMaterial2d(material),
         PassiveSensor::default(),
         RigidBody::Dynamic,
+        Transform::from_xyz(0., 0., RadarZOrdering::Ships.z_order()),
+        observe(obs_collision),
     )
-    // .observe(observer_collision())
 }
 
 pub fn spawn_test_ennemy(
@@ -51,24 +52,15 @@ pub fn spawn_test_ennemy(
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
+    let mesh = meshes.add(shape);
+    let material = materials.add(Color::from(RED));
     commands.spawn((
-        Spaceship,
-        AngularDamping(ROTATION_DAMPENING),
-        Collider::from(shape),
-        CollisionEventsEnabled,
-        GravityAffected,
-        Health(DEFAULT_HEALTH),
-        MaxAngularSpeed(MAX_ANGULAR_SPEED),
-        Mesh2d(meshes.add(shape)),
-        MeshMaterial2d(materials.add(Color::from(RED))),
-        PassiveSensor::default(),
-        RigidBody::Dynamic,
+        spaceship(mesh, material),
         Transform::from_xyz(50., 50., RadarZOrdering::Ships.z_order()),
     ));
 }
 
-#[allow(dead_code)]
-fn observer_collision(
+fn obs_collision(
     trigger: On<CollisionStart>,
     mut ship_query: Query<(&LinearVelocity, &mut Health), With<Spaceship>>,
 ) {
