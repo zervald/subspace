@@ -76,14 +76,12 @@ impl FromWorld for PlayershipAssets {
     }
 }
 
-pub fn playership(asset: &PlayershipAssets) -> impl Bundle {
-    let z = RadarZOrdering::Ships.z_order();
+pub fn playership(x: f32, y: f32, asset: &PlayershipAssets) -> impl Bundle {
     (
-        spaceship(asset.mesh.clone(), asset.material.clone()),
+        spaceship(x, y, asset.mesh.clone(), asset.material.clone()),
         PlayerShip,
         Name::new("Serenity"),
         CameraFollowMark,
-        Transform::from_xyz(0., 0., z),
     )
 }
 

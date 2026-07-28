@@ -14,7 +14,7 @@ pub fn spawn_test_level(
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
     let shape = Rectangle::new(5., 5.);
-    let ship = playership(&playership_asset);
+    let ship = playership(0., 0., &playership_asset);
 
     commands.spawn((
         Name::new("Level"),

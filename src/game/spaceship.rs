@@ -26,7 +26,12 @@ pub struct ShipShield {
     pub active: bool,
 }
 
-pub fn spaceship(mesh: Handle<Mesh>, material: Handle<ColorMaterial>) -> impl Bundle {
+pub fn spaceship(
+    x: f32,
+    y: f32,
+    mesh: Handle<Mesh>,
+    material: Handle<ColorMaterial>,
+) -> impl Bundle {
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     (
         Spaceship,
@@ -41,7 +46,7 @@ pub fn spaceship(mesh: Handle<Mesh>, material: Handle<ColorMaterial>) -> impl Bu
         MeshMaterial2d(material),
         PassiveSensor::default(),
         RigidBody::Dynamic,
-        Transform::from_xyz(0., 0., RadarZOrdering::Ships.z_order()),
+        Transform::from_xyz(x, y, RadarZOrdering::Ships.z_order()),
         observe(obs_collision),
     )
 }
@@ -54,24 +59,21 @@ pub fn spawn_test_ennemy(
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     let mesh = meshes.add(shape);
     let material = materials.add(Color::from(RED));
-    commands.spawn((
-        spaceship(mesh, material),
-        Transform::from_xyz(50., 50., RadarZOrdering::Ships.z_order()),
-    ));
+    commands.spawn(spaceship(50.0, 50., mesh, material));
 }
 
 fn obs_collision(
     trigger: On<CollisionStart>,
-    mut ship_query: Query<(&LinearVelocity, &mut Health), With<Spaceship>>,
+    mut ship_query: Query<(NameOrEntity, &LinearVelocity, &mut Health), With<Spaceship>>,
 ) {
     if trigger.body1.is_none() {
         return;
     }
     let ship = trigger.collider1;
     let other_entity = trigger.collider2;
-    if let Ok((velocity, mut health)) = ship_query.get_mut(ship) {
+    if let Ok((name, velocity, mut health)) = ship_query.get_mut(ship) {
         let damage: i32 = (COLLISION_DAMAGE_FACTOR * velocity.length()).round() as i32;
-        info!("SHIP COLLISION: {ship} collided with {other_entity} for {damage}");
+        info!("SHIP COLLISION: {name} collided with {other_entity} for {damage} damage");
         health.damage(damage);
     }
 }
