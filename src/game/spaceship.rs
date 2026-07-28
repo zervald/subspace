@@ -30,6 +30,7 @@ pub fn spaceship(mesh: Handle<Mesh>, material: Handle<ColorMaterial>) -> impl Bu
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     (
         Spaceship,
+        AffectedByCloud,
         AngularDamping(ROTATION_DAMPENING),
         Collider::from(shape),
         CollisionEventsEnabled,
