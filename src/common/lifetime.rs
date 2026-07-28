@@ -2,14 +2,16 @@ use std::time::Duration;
 
 use bevy::prelude::*;
 
-use crate::{game::prelude::GameState, screens::Screen};
+use crate::{AppSystems, Pause, game::prelude::GameState};
 
 pub struct LifetimePlugin;
 impl Plugin for LifetimePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
-            FixedUpdate,
-            update_lifetime.run_if(in_state(Screen::Gameplay)),
+            Update,
+            update_lifetime
+                .run_if(in_state(Pause(false)))
+                .in_set(AppSystems::TickTimers),
         );
     }
 }
