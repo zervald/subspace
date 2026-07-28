@@ -57,7 +57,7 @@ pub fn test_planet(
 
 fn obs_planet_collision(
     activate: On<CollisionStart>,
-    planet_query: Query<&Name, (With<CollisionEventsEnabled>, With<Planet>)>,
+    planet_query: Query<NameOrEntity, (With<CollisionEventsEnabled>, With<Planet>)>,
     mut query: Query<&mut Health, With<CollisionEventsEnabled>>,
 ) {
     if activate.body1.is_none() {
@@ -67,11 +67,10 @@ fn obs_planet_collision(
     let other_entity = activate.collider2;
 
     if let Ok(mut health) = query.get_mut(other_entity) {
-        let name: String = match planet_query.get(planet_entity) {
-            Ok(n) => n.to_string(),
-            Err(_) => "No name".into(),
+        let Ok(planet) = planet_query.get(planet_entity) else {
+            return;
         };
-        info!("PLANET COLLISION: {other_entity} collided with planet {name}");
+        info!("PLANET COLLISION: {other_entity} collided with planet {planet}");
         **health = 0;
     };
 }
