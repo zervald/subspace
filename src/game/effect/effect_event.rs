@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use bevy::prelude::*;
 
 use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
@@ -7,7 +9,7 @@ pub struct EventAddEffect {
     source: Entity,
     target: Entity,
     lifetime: Option<Lifetime>,
-    effects: Vec<EffectType>,
+    effects: Arc<[EffectType]>,
 }
 
 impl EventAddEffect {
@@ -15,7 +17,7 @@ impl EventAddEffect {
         source: Entity,
         target: Entity,
         lifetime: Option<Lifetime>,
-        effects: Vec<EffectType>,
+        effects: Arc<[EffectType]>,
     ) -> Self {
         Self {
             source,

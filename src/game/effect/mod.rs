@@ -6,7 +6,7 @@ use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
 
 /// Marker component for an "Effect Entity", determining when it should get removed
 ///
-/// This effect entity will be despawn when [`Effect::source`] is removed
+/// This effect entity will be despawn when [`Effect::source`] is despawned
 /// or when [`Effect::lifetime`] runs out.
 ///
 ///
