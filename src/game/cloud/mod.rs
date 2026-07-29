@@ -24,11 +24,11 @@ const DEFAULT_COLOR: Color = Color::srgba(0.0, 0.2, 0.3, 0.5);
 
 #[derive(Component, Debug, Clone)]
 pub struct Cloud {
-    pub effects: Arc<[EffectType]>,
+    pub effects: Arc<[Effect]>,
 }
 
 pub trait CloudBundle {
-    fn default_effects() -> Vec<EffectType>;
+    fn default_effects() -> Vec<Effect>;
     fn new(x: f32, y: f32) -> impl Bundle {
         (
             Cloud {

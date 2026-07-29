@@ -1,4 +1,5 @@
-use crate::game::{cloud::Cloud, effect::effect_event::EventAddEffect};
+use crate::game::cloud::Cloud;
+use crate::game::prelude::*;
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
@@ -23,12 +24,13 @@ fn cloud_enter(
     };
 
     info!("`{other}` collided with Cloud `{cloud_name}`");
-    commands.trigger(EventAddEffect::new(
-        cloud_name.entity,
-        other.entity,
-        None,
-        cloud.effects.clone(),
-    ));
+    for effect in cloud.effects.iter() {
+        commands.trigger(AddEffect::new(
+            cloud_name.entity,
+            other.entity,
+            effect.to_owned(),
+        ));
+    }
 }
 
 // TODO: find solution with lifetime,

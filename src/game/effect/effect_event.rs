@@ -1,31 +1,19 @@
-use std::sync::Arc;
-
+use crate::game::prelude::Effect;
 use bevy::prelude::*;
 
-use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
-
-#[derive(Message, Event)]
-pub struct EventAddEffect {
-    source: Entity,
-    target: Entity,
-    lifetime: Option<Lifetime>,
-    effects: Arc<[EffectType]>,
+#[derive(Event, Debug)]
+pub struct AddEffect {
+    effect_entity: Entity,
+    parent: Entity,
+    effect: Effect,
 }
 
-impl EventAddEffect {
-    pub fn new(
-        source: Entity,
-        target: Entity,
-        lifetime: Option<Lifetime>,
-        effects: Arc<[EffectType]>,
-    ) -> Self {
+impl AddEffect {
+    pub fn new(effect_entity: Entity, parent: Entity, effect: Effect) -> Self {
         Self {
-            source,
-            target,
-            lifetime,
-            effects,
+            effect_entity,
+            parent,
+            effect,
         }
     }
 }
-
-//TODO: AddEffectEvent system / observers

@@ -1,47 +1,45 @@
+use crate::game::prelude::Electrified;
+use crate::game::prelude::Obscured;
 use bevy::prelude::*;
-use effect_event::EventAddEffect;
-use effect_types::EffectTypePlugin;
 
-use crate::{common::prelude::Lifetime, game::effect::effect_types::EffectType};
+mod effect_event;
+mod effect_types;
 
-/// Marker component for an "Effect Entity", determining when it should get removed
-///
-/// This effect entity will be despawn when [`Effect::source`] is despawned
-/// or when [`Effect::lifetime`] runs out.
-///
-///
-#[derive(Component)]
-pub struct Effect {
-    source: Entity,
-    lifetime: Option<Lifetime>,
-    effects: Vec<EffectType>,
+pub mod prelude {
+    pub use super::Effect;
+    pub use super::effect_event::AddEffect;
+    pub use super::effect_types::electricity::Electrified;
+    pub use super::effect_types::obscured::Obscured;
 }
-
-pub type EffectEntity = Entity;
-
-// TODO: system transform AddEffectEvent -> EffectEntity
-fn catch_add_effect_event(_event_reader: MessageReader<EventAddEffect>) {}
-
-#[derive(Component, Deref, DerefMut)]
-pub struct EffectSource {
-    effect_entity: Entity,
-}
-
-impl From<Entity> for EffectSource {
-    fn from(value: Entity) -> Self {
-        Self {
-            effect_entity: value,
-        }
-    }
-}
-
-pub mod effect_event;
-pub mod effect_types;
 
 pub struct EffectPlugin;
 impl Plugin for EffectPlugin {
     fn build(&self, app: &mut App) {
-        app.add_message::<EventAddEffect>();
-        app.add_plugins(EffectTypePlugin);
+        // app.add_message::<EventAddEffect>();
+        app.add_plugins(effect_types::plugin);
     }
 }
+
+#[derive(Component, Debug, Clone)]
+pub enum Effect {
+    Obscured(Obscured),
+    Electrified(Electrified),
+}
+
+impl Effect {
+    fn base_bundle() -> impl Bundle {}
+    pub fn spawn<'a>(self, commands: &'a mut Commands) -> EntityCommands<'a> {
+        match self {
+            Effect::Obscured(obscured) => commands.spawn((obscured, Self::base_bundle())),
+            Effect::Electrified(electrified) => commands.spawn((electrified, Self::base_bundle())),
+        }
+    }
+}
+// fn spawn_effect_entity(&self) -> EffectEntity;
+//
+// fn add_to(&self, mut commands: Commands, entity: Entity) {
+//     match commands.get_entity(entity) {
+//         Ok(mut ec) => ec.add_child(self.spawn_effect_entity()),
+//         Err(_) => return,
+//     };
+// }
