@@ -46,9 +46,6 @@ pub fn test_planet(
         children![(
             Name::new("Pebble"),
             station(-50.0, 0., station_mesh, station_material, 1.),
-            Collider::circle(2.),
-            RigidBody::Static,
-            Transform::from_xyz(-50., 0., RadarZOrdering::Planet.z_order()),
         )],
     )
 }
