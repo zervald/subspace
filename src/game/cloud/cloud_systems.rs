@@ -7,7 +7,7 @@ pub(super) fn plugin(app: &mut App) {
 }
 
 #[derive(Component)]
-pub(super) struct AffectedByCloud;
+pub struct AffectedByCloud;
 
 fn cloud_enter(
     trigger: On<CollisionStart>,

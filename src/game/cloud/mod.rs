@@ -8,6 +8,10 @@ mod cloud_part;
 mod cloud_systems;
 mod nebula;
 
+pub mod prelude {
+    pub use super::cloud_systems::AffectedByCloud;
+}
+
 pub struct CloudPlugin;
 impl Plugin for CloudPlugin {
     fn build(&self, app: &mut App) {
