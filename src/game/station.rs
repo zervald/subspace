@@ -1,4 +1,4 @@
-use crate::game::prelude::*;
+use crate::game::{docking::Dockable, prelude::*};
 use avian2d::prelude::*;
 
 pub struct StationPlugin;
@@ -7,7 +7,7 @@ impl Plugin for StationPlugin {
 }
 
 #[derive(Component, Debug)]
-#[require(GameEntity, CollisionEventsEnabled, RigidBody::Static)]
+#[require(GameEntity, CollisionEventsEnabled, RigidBody::Static, Dockable)]
 pub struct Station;
 
 // NOTE: observer that creates another observer when a specific component is added

@@ -9,7 +9,7 @@ impl Plugin for DockingPlugin {
     }
 }
 
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Default)]
 #[require(CollisionEventsEnabled)]
 pub struct Dockable;
 
