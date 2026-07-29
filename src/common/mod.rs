@@ -1,8 +1,11 @@
+#![allow(unused)]
 use bevy::prelude::*;
 
 mod despawn;
 pub mod lifetime;
-pub mod prelude;
+pub mod utils;
+
+pub use crate::common::lifetime::Lifetime;
 
 pub struct CommonPlugin;
 

@@ -20,7 +20,7 @@ impl Default for GravitySource {
     }
 }
 
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Default)]
 pub struct AffectedByGravity;
 
 pub struct GravityPlugin;

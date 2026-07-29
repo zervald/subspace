@@ -10,13 +10,6 @@ impl Plugin for StationPlugin {
 #[require(GameEntity, CollisionEventsEnabled, RigidBody::Static, Dockable)]
 pub struct Station;
 
-// NOTE: observer that creates another observer when a specific component is added
-// fn attach_observer(trigger: On<Add, Station>, mut commands: Commands) {
-//     if let Ok(mut entity_command) = commands.get_entity(trigger.event_target()) {
-//         entity_command.observe(obs_docking_collision);
-//     }
-// }
-
 pub fn station(
     x: f32,
     y: f32,

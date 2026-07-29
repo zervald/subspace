@@ -1,4 +1,4 @@
-#![allow(unused)]
+#[allow(unused)]
 pub use crate::game::{
     GameEntity,
     cloud::prelude::*,

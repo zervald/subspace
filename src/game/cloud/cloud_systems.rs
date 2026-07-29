@@ -7,7 +7,7 @@ pub(super) fn plugin(app: &mut App) {
     app.add_observer(cloud_enter);
 }
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct AffectedByCloud;
 
 fn cloud_enter(
