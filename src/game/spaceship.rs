@@ -1,5 +1,5 @@
 use crate::game::detection::sensor::*;
-use crate::game::gravity::GravityAffected;
+use crate::game::gravity::AffectedByGravity;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
 use bevy::{color::palettes::css::*, ui_widgets::observe};
@@ -39,7 +39,7 @@ pub fn spaceship(
         AngularDamping(ROTATION_DAMPENING),
         Collider::from(shape),
         CollisionEventsEnabled,
-        GravityAffected,
+        AffectedByGravity,
         Health(DEFAULT_HEALTH),
         MaxAngularSpeed(MAX_ANGULAR_SPEED),
         Mesh2d(mesh),

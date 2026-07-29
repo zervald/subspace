@@ -21,7 +21,7 @@ impl Default for GravitySource {
 }
 
 #[derive(Component, Debug)]
-pub struct GravityAffected;
+pub struct AffectedByGravity;
 
 pub struct GravityPlugin;
 
@@ -37,7 +37,7 @@ impl Plugin for GravityPlugin {
 fn apply_gravity(
     mut commands: Commands,
     sources: Query<(&Transform, &GravitySource)>,
-    objects: Query<(Entity, &Transform), With<GravityAffected>>,
+    objects: Query<(Entity, &Transform), With<AffectedByGravity>>,
 ) {
     if sources.is_empty() || objects.is_empty() {
         return;

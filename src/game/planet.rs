@@ -19,7 +19,7 @@ impl Plugin for PlanetPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
-            // WARN: State should be cruising
+            // TODO: visual, so rotation is visible
             (rotate_planets).run_if(|| false),
         );
     }
@@ -70,7 +70,6 @@ fn obs_planet_collision(
     };
 }
 
-#[allow(dead_code)]
 // NOTE: velocity calc by distance from star?
 fn rotate_planets(mut query: Query<&mut Transform, With<Planet>>, time: Res<Time>) {
     for mut transform in query.iter_mut() {

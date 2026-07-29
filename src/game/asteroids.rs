@@ -1,4 +1,4 @@
-use crate::game::gravity::GravityAffected;
+use crate::game::gravity::AffectedByGravity;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
 use bevy::{color::palettes::css::*, prelude::*};
@@ -113,7 +113,7 @@ fn spawn_asteroid(
             transform,
             RigidBody::Kinematic,
             Collider::circle(SIZE_RADIUS),
-            GravityAffected,
+            AffectedByGravity,
             children![(
                 Mesh2d(meshes.add(Circle::new(SIZE_RADIUS / 3.))),
                 MeshMaterial2d(materials.add(Color::from(DARK_SLATE_GREY))),
