@@ -4,50 +4,49 @@ use avian2d::prelude::*;
 pub struct DockingPlugin;
 impl Plugin for DockingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_message::<MsgDockingStart>();
+        app.add_observer(transition_player_to_docking);
+        app.add_observer(obs_docking_collision);
     }
 }
 
-#[derive(Message, Debug)]
-pub struct MsgDockingStart {
-    ship_id: Entity,
+#[derive(Component, Debug)]
+#[require(CollisionEventsEnabled)]
+pub struct Dockable;
+
+#[derive(Event, Debug)]
+pub struct DockingStart {
     dock_id: Entity,
+    ship_id: Entity,
 }
 
-fn transition_to_docking(
-    msg: MessageReader<MsgDockingStart>,
+fn transition_player_to_docking(
+    event: On<DockingStart>,
     mut next_state: ResMut<NextState<GameState>>,
+    playership: Single<Entity, With<PlayerShip>>,
 ) {
-    if msg.is_empty() {
-        return;
+    if event.ship_id == *playership {
+        next_state.set(GameState::Docking);
     }
-    next_state.set(GameState::Docking);
 }
 
 const MAX_VEL_DOCKING: f32 = 10.0;
 
 fn obs_docking_collision(
-    trigger: On<CollisionStart>,
-    station_query: Query<(NameOrEntity, &Station)>,
-    mut ships_query: Query<(&mut LinearVelocity, &mut Health), With<Spaceship>>,
+    event: On<CollisionStart>,
+    mut commands: Commands,
+    dock_query: Query<NameOrEntity, With<Dockable>>,
+    ships_query: Query<(NameOrEntity, &LinearVelocity), With<Spaceship>>,
 ) {
-    if trigger.body1.is_none() {
-        return;
-    }
-    let station_entity = trigger.collider1;
-    let other_entity = trigger.collider2;
-
-    if let Ok((vel, _health)) = ships_query.get_mut(other_entity)
-        && let Ok((name, _station)) = &station_query.get(station_entity)
+    if let Ok(dock) = dock_query.get(event.collider1)
+        && let Ok((ship, ship_velocity)) = ships_query.get(event.collider2)
     {
-        info!("DOCKING: {other_entity} collided with station `{name}`");
-        if vel.length() < MAX_VEL_DOCKING {
-            //Docking
-            // TODO:
-            // event.write(EventDocking {
-            //     ship_id: other_entity,
-            //     station_id: station_entity,
-            // });
+        info!("DOCKING: {ship} in docking range with dock `{dock}`");
+        if ship_velocity.length() < MAX_VEL_DOCKING {
+            // Docking
+            commands.trigger(DockingStart {
+                dock_id: dock.entity,
+                ship_id: ship.entity,
+            });
         }
     }
 }
