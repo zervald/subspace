@@ -10,11 +10,11 @@ pub struct DespawnPlugin;
 
 impl Plugin for DespawnPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnExit(Screen::Gameplay), despawn_all_game_entities)
-            .add_systems(
-                Update,
-                despawn_far_away_entities.run_if(in_state(Screen::Gameplay)),
-            );
+        app.add_systems(OnExit(Screen::Gameplay), despawn_all_game_entities);
+        app.add_systems(
+            Update,
+            despawn_far_away_entities.run_if(in_state(Screen::Gameplay)),
+        );
     }
 }
 
