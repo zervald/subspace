@@ -2,11 +2,11 @@ use crate::game::detection::sensor::*;
 use crate::game::gravity::AffectedByGravity;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
-use bevy::{color::palettes::css::*, ui_widgets::observe};
+use bevy::color::palettes::css::*;
 
 const COLLISION_DAMAGE_FACTOR: f32 = 0.5;
 const DEFAULT_HEALTH: i32 = 100;
-const MAX_ANGULAR_SPEED: f32 = 15.0;
+const MAX_ANGULAR_SPEED: f32 = 20.0;
 const ROTATION_DAMPENING: f32 = 2.0;
 
 pub struct SpaceshipPlugin;
@@ -18,10 +18,20 @@ impl Plugin for SpaceshipPlugin {
 #[derive(Component, Debug)]
 #[require(
     GameEntity,
+    // ship gameplay
+    Health(DEFAULT_HEALTH),
+    Emission,
+    PassiveSensor,
+    // AffectedBy
+    AffectedByCloud,
+    AffectedByGravity,
+    // physics
     AngularDamping(ROTATION_DAMPENING),
-    MaxAngularSpeed(MAX_ANGULAR_SPEED),
     CollisionEventsEnabled,
-    RigidBody::Dynamic
+    Mass(2.0),
+    MaxAngularSpeed(MAX_ANGULAR_SPEED),
+    NoAutoMass,
+    RigidBody::Dynamic,
 )]
 pub struct Spaceship;
 
@@ -41,21 +51,10 @@ pub fn spaceship(
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     (
         Spaceship,
-        Health(DEFAULT_HEALTH),
         Mesh2d(mesh),
         MeshMaterial2d(material),
         Transform::from_xyz(x, y, RadarZOrdering::Ships.z_order()),
-        // ship gameplay
-        (Emission::default(), PassiveSensor::default()),
-        // AffectedBy
-        (AffectedByCloud, AffectedByGravity),
-        // physics
-        (
-            Collider::from(shape),
-            Mass(2.0),
-            NoAutoMass,
-            observe(obs_collision),
-        ),
+        Collider::from(shape),
     )
 }
 
