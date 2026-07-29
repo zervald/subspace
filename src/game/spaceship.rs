@@ -16,7 +16,13 @@ impl Plugin for SpaceshipPlugin {
 }
 
 #[derive(Component, Debug)]
-#[require(GameEntity, Emission, RigidBody::Dynamic)]
+#[require(
+    GameEntity,
+    AngularDamping(ROTATION_DAMPENING),
+    MaxAngularSpeed(MAX_ANGULAR_SPEED),
+    CollisionEventsEnabled,
+    RigidBody::Dynamic
+)]
 pub struct Spaceship;
 
 #[allow(dead_code)]
@@ -35,19 +41,21 @@ pub fn spaceship(
     let shape = Triangle2d::new(Vec2::Y * 5.0, vec2(-2.5, -2.5), vec2(2.5, -2.5));
     (
         Spaceship,
-        AffectedByCloud,
-        AngularDamping(ROTATION_DAMPENING),
-        Collider::from(shape),
-        CollisionEventsEnabled,
-        AffectedByGravity,
         Health(DEFAULT_HEALTH),
-        MaxAngularSpeed(MAX_ANGULAR_SPEED),
         Mesh2d(mesh),
         MeshMaterial2d(material),
-        PassiveSensor::default(),
-        RigidBody::Dynamic,
         Transform::from_xyz(x, y, RadarZOrdering::Ships.z_order()),
-        observe(obs_collision),
+        // ship gameplay
+        (Emission::default(), PassiveSensor::default()),
+        // AffectedBy
+        (AffectedByCloud, AffectedByGravity),
+        // physics
+        (
+            Collider::from(shape),
+            Mass(2.0),
+            NoAutoMass,
+            observe(obs_collision),
+        ),
     )
 }
 

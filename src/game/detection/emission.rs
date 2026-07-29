@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 // Emission
-#[derive(Component, Deref, DerefMut)]
+#[derive(Component, Debug, Deref, DerefMut)]
 pub struct Emission(pub i32);
 
 impl Default for Emission {
