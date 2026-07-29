@@ -1,3 +1,4 @@
+use crate::attach_observer_on_add;
 use crate::game::detection::sensor::*;
 use crate::game::gravity::AffectedByGravity;
 use crate::game::prelude::*;
@@ -11,8 +12,9 @@ const ROTATION_DAMPENING: f32 = 2.0;
 
 pub struct SpaceshipPlugin;
 impl Plugin for SpaceshipPlugin {
-    #[allow(unused_variables)]
-    fn build(&self, app: &mut App) {}
+    fn build(&self, _app: &mut App) {
+        _app.add_observer(attach_observer_on_add!(Spaceship, obs_collision));
+    }
 }
 
 #[derive(Component, Debug)]
