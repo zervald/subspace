@@ -13,9 +13,7 @@ impl Plugin for StationPlugin {
 
 #[derive(Component, Debug)]
 #[require(GameEntity, CollisionEventsEnabled, RigidBody::Static)]
-pub struct Station {
-    pub name: String,
-}
+pub struct Station;
 
 #[derive(Bundle, Debug)]
 pub struct StationBundle {
@@ -28,7 +26,7 @@ pub struct StationBundle {
 
 fn attach_observer(trigger: On<Add, Station>, mut commands: Commands) {
     if let Ok(mut entity_command) = commands.get_entity(trigger.event_target()) {
-        entity_command.observe(obs_station_collision);
+        entity_command.observe(obs_docking_collision);
     }
 }
 
@@ -37,12 +35,13 @@ fn new_station(
     mut commands: Commands,
     mesh: Mesh2d,
     material: MeshMaterial2d<ColorMaterial>,
-    name: &str,
+    name: String,
     size: f32,
 ) -> Entity {
     commands
         .spawn((
-            Station { name: name.into() },
+            Name::new(name),
+            Station,
             Collider::circle(size),
             mesh,
             material,
@@ -52,9 +51,9 @@ fn new_station(
         .id()
 }
 
-fn obs_station_collision(
+fn obs_docking_collision(
     trigger: On<CollisionStart>,
-    station_query: Query<&Station>,
+    station_query: Query<(NameOrEntity, &Station)>,
     mut ships_query: Query<(&mut LinearVelocity, &mut Health), With<Spaceship>>,
     // mut event: EventWriter<EventDocking>,
 ) {
@@ -65,32 +64,17 @@ fn obs_station_collision(
     let other_entity = trigger.collider1;
 
     if let Ok((vel, _health)) = ships_query.get_mut(other_entity) {
-        let name = &station_query.get(station_entity).unwrap().name;
-        info!("COLLISION: {other_entity} collided with station: {name}");
-        if vel.length() < MAX_VEL_DOCKING {
-            //Docking
-            // TODO:
-            // event.write(EventDocking {
-            //     ship_id: other_entity,
-            //     station_id: station_entity,
-            // });
+        if let Ok((name, station)) = &station_query.get(station_entity) {
+            info!("DOCKING: {other_entity} collided with station `{name}`");
+            if vel.length() < MAX_VEL_DOCKING {
+                //Docking
+                // TODO:
+                // event.write(EventDocking {
+                //     ship_id: other_entity,
+                //     station_id: station_entity,
+                // });
+            }
         }
-    }
-}
-
-// NOTE: Now done planet rotation
-// BUG: Circle becomes bigger over time
-// mayne need rotation
-#[allow(dead_code)]
-fn move_stations(
-    mut stations: Query<&mut Transform, (With<Station>, With<ChildOf>)>,
-    timer: Res<Time>,
-) {
-    for mut transform in &mut stations {
-        // TODO: system/fn to determine orbital velocity,
-        // store vel in station ?
-        let forward = transform.up();
-        transform.translation += forward * 10. * timer.delta_secs();
     }
 }
 
