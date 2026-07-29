@@ -1,81 +1,38 @@
 use crate::game::prelude::*;
 use avian2d::prelude::*;
-use bevy::prelude::*;
-
-const MAX_VEL_DOCKING: f32 = 10.;
 
 pub struct StationPlugin;
 impl Plugin for StationPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_observer(attach_observer);
-    }
+    fn build(&self, _app: &mut App) {}
 }
 
 #[derive(Component, Debug)]
 #[require(GameEntity, CollisionEventsEnabled, RigidBody::Static)]
 pub struct Station;
 
-#[derive(Bundle, Debug)]
-pub struct StationBundle {
-    station: Station,
-    collider: Collider,
-    mesh2d: Mesh2d,
-    mesh_material: MeshMaterial2d<ColorMaterial>,
-    transform: Transform,
-}
+// NOTE: observer that creates another observer when a specific component is added
+// fn attach_observer(trigger: On<Add, Station>, mut commands: Commands) {
+//     if let Ok(mut entity_command) = commands.get_entity(trigger.event_target()) {
+//         entity_command.observe(obs_docking_collision);
+//     }
+// }
 
-fn attach_observer(trigger: On<Add, Station>, mut commands: Commands) {
-    if let Ok(mut entity_command) = commands.get_entity(trigger.event_target()) {
-        entity_command.observe(obs_docking_collision);
-    }
-}
-
-#[allow(dead_code)]
-fn new_station(
-    mut commands: Commands,
+pub fn station(
+    x: f32,
+    y: f32,
     mesh: Mesh2d,
     material: MeshMaterial2d<ColorMaterial>,
-    name: String,
     size: f32,
-) -> Entity {
-    commands
-        .spawn((
-            Name::new(name),
-            Station,
-            Collider::circle(size),
-            mesh,
-            material,
-            RigidBody::Static,
-            Transform::from_xyz(-10., 0., RadarZOrdering::Planet.z_order()),
-        ))
-        .id()
-}
-
-fn obs_docking_collision(
-    trigger: On<CollisionStart>,
-    station_query: Query<(NameOrEntity, &Station)>,
-    mut ships_query: Query<(&mut LinearVelocity, &mut Health), With<Spaceship>>,
-    // mut event: EventWriter<EventDocking>,
-) {
-    if trigger.body1.is_none() {
-        return;
-    }
-    let station_entity = trigger.event_target();
-    let other_entity = trigger.collider1;
-
-    if let Ok((vel, _health)) = ships_query.get_mut(other_entity) {
-        if let Ok((name, station)) = &station_query.get(station_entity) {
-            info!("DOCKING: {other_entity} collided with station `{name}`");
-            if vel.length() < MAX_VEL_DOCKING {
-                //Docking
-                // TODO:
-                // event.write(EventDocking {
-                //     ship_id: other_entity,
-                //     station_id: station_entity,
-                // });
-            }
-        }
-    }
+) -> impl Bundle {
+    (
+        Station,
+        Collider::circle(size),
+        mesh,
+        material,
+        RigidBody::Static,
+        CollisionEventsEnabled,
+        Transform::from_xyz(x, y, RadarZOrdering::Planet.z_order()),
+    )
 }
 
 #[allow(dead_code)]

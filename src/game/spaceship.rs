@@ -2,7 +2,7 @@ use crate::game::detection::sensor::*;
 use crate::game::gravity::GravityAffected;
 use crate::game::prelude::*;
 use avian2d::prelude::*;
-use bevy::{color::palettes::css::*, prelude::*, ui_widgets::observe};
+use bevy::{color::palettes::css::*, ui_widgets::observe};
 
 const COLLISION_DAMAGE_FACTOR: f32 = 0.5;
 const DEFAULT_HEALTH: i32 = 100;
