@@ -86,11 +86,10 @@ pub fn playership(x: f32, y: f32, asset: &PlayershipAssets) -> impl Bundle {
 }
 
 fn spaceship_propulsion_controls(
-    query: Single<(&mut LinearVelocity, &Transform), With<PlayerShip>>,
+    query: Single<(Forces, &Transform), With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    time: Res<Time>,
 ) {
-    let (mut linear_v, transform) = query.into_inner();
+    let (mut forces, transform) = query.into_inner();
 
     let mut accel = 0.0;
     if keyboard_input.pressed(KeyCode::KeyW) {
@@ -99,7 +98,7 @@ fn spaceship_propulsion_controls(
 
     let direction = transform.up();
 
-    linear_v.0 += direction.xy() * accel * time.delta_secs();
+    forces.apply_force(direction.xy() * accel);
 }
 
 fn spaceship_stop_controls(
