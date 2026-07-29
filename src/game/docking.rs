@@ -4,22 +4,21 @@ use avian2d::prelude::*;
 pub struct DockingPlugin;
 impl Plugin for DockingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_message::<EventDockingStart>()
-            .add_systems(FixedUpdate, transition_to_docking);
+        app.add_message::<MsgDockingStart>();
     }
 }
 
 #[derive(Message, Debug)]
-pub struct EventDockingStart {
+pub struct MsgDockingStart {
     ship_id: Entity,
-    station_id: Entity,
+    dock_id: Entity,
 }
 
 fn transition_to_docking(
-    event: MessageReader<EventDockingStart>,
+    msg: MessageReader<MsgDockingStart>,
     mut next_state: ResMut<NextState<GameState>>,
 ) {
-    if event.is_empty() {
+    if msg.is_empty() {
         return;
     }
     next_state.set(GameState::Docking);
