@@ -7,8 +7,8 @@ use avian2d::prelude::*;
 use bevy::{color, prelude::*};
 
 const FULL_STOP_THRESHOLD: f32 = 10.;
-const PROPULSION_SPEED: f32 = 50.0;
-const ROTATION_SPEED: f32 = 7.5;
+const PROPULSION_SPEED: f32 = 75.0;
+const ROTATION_SPEED: f32 = 200.0;
 const STOP_FACTOR: f32 = 2.;
 const WEAPON_FIRE_INTERVAL: f32 = 0.10; // per seconds
 
@@ -25,6 +25,12 @@ pub struct PlayershipPlugin;
 impl Plugin for PlayershipPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<PlayershipAssets>();
+        app.insert_resource(WeaponTimer(Timer::from_seconds(
+            WEAPON_FIRE_INTERVAL,
+            TimerMode::Repeating,
+        )));
+
+        app.configure_sets(Update, CruiseSystems.run_if(in_state(GameState::Cruising)));
 
         app.add_systems(
             Update,
@@ -40,16 +46,10 @@ impl Plugin for PlayershipPlugin {
                 .in_set(CruiseSystems),
         );
 
-        app.configure_sets(Update, CruiseSystems.run_if(in_state(GameState::Cruising)));
-
         // .add_systems(
         //     FixedUpdate,
         //     playership_destroyed.run_if(in_state(GameState::Cruising)),
         // )
-        app.insert_resource(WeaponTimer(Timer::from_seconds(
-            WEAPON_FIRE_INTERVAL,
-            TimerMode::Repeating,
-        )));
     }
 }
 
@@ -124,12 +124,12 @@ fn spaceship_stop_controls(
 }
 
 fn spaceship_rotation_controls(
-    mut angular: Single<&mut AngularVelocity, With<PlayerShip>>,
+    playership: Single<Forces, With<PlayerShip>>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    time: Res<Time>,
 ) {
-    let delta_secs = time.delta_secs();
-    let scalar = if keyboard_input.pressed(KeyCode::KeyD) {
+    let mut forces = playership.into_inner();
+
+    let torque = if keyboard_input.pressed(KeyCode::KeyD) {
         -ROTATION_SPEED
     } else if keyboard_input.pressed(KeyCode::KeyA) {
         ROTATION_SPEED
@@ -137,7 +137,7 @@ fn spaceship_rotation_controls(
         0.
     };
 
-    angular.0 += scalar * delta_secs;
+    forces.apply_torque(torque);
 }
 
 fn spaceship_weapon_controls(
