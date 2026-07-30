@@ -8,7 +8,7 @@ pub(super) fn plugin(app: &mut App) {
         docking::DockingPlugin,
         gravity::GravityPlugin,
         health::HealthPlugin,
-        effect::EffectPlugin,
+        effects::EffectsPlugin,
         missile::MissilePlugin,
         planet::PlanetPlugin,
         gamestate::GameStatePlugin,
@@ -28,7 +28,7 @@ pub mod collision;
 pub mod damage;
 pub mod detection;
 pub mod docking;
-pub mod effect;
+pub mod effects;
 pub mod gamestate;
 pub mod gravity;
 pub mod health;

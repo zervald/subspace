@@ -3,6 +3,7 @@ use std::sync::Arc;
 use crate::game::prelude::*;
 use avian2d::collision::collision_events::CollisionEventsEnabled;
 use bevy::prelude::*;
+use bevy_alchemy::Effect;
 
 mod cloud_part;
 mod cloud_systems;
@@ -22,20 +23,8 @@ impl Plugin for CloudPlugin {
 const DEFAULT_CIRCLE_RADIUS: f32 = 10.0;
 const DEFAULT_COLOR: Color = Color::srgba(0.0, 0.2, 0.3, 0.5);
 
-#[derive(Component, Debug, Clone)]
+#[derive(Component)]
+#[require()]
 pub struct Cloud {
-    pub effects: Arc<[Effect]>,
-}
-
-pub trait CloudBundle {
-    fn default_effects() -> Vec<Effect>;
-    fn new(x: f32, y: f32) -> impl Bundle {
-        (
-            Cloud {
-                effects: Arc::from(Self::default_effects()),
-            },
-            Transform::from_xyz(x, y, RadarZOrdering::Clouds.z_order()),
-            CollisionEventsEnabled,
-        )
-    }
+    // pub effects: Vec<Effect<B>>,
 }

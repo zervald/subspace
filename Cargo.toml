@@ -14,7 +14,11 @@ tracing = { version = "0.1", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+# 3rd party lib
+# physics
 avian2d = "0.7"
+# status effects
+bevy_alchemy = "0.6.0"
 
 [target.wasm32-unknown-unknown.dependencies]
 getrandom = { version = "0.4", features = ["wasm_js"] }

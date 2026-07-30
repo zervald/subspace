@@ -4,7 +4,7 @@ pub use crate::game::{
     cloud::prelude::*,
     damage::TakeDamage,
     detection::{DetectedContacts, SensorContactDetected, emission::Emission},
-    effect::prelude::*,
+    effects::prelude::*,
     gamestate::GameState,
     health::Health,
     playership::PlayerShip,

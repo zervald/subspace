@@ -24,13 +24,14 @@ fn cloud_enter(
     };
 
     info!("`{other}` collided with Cloud `{cloud_name}`");
-    for effect in cloud.effects.iter() {
-        commands.trigger(AddEffect::new(
-            cloud_name.entity,
-            other.entity,
-            effect.to_owned(),
-        ));
-    }
+    // for effect in cloud.effects.iter() {
+    // TODO:
+    // commands.trigger(AddEffect::new(
+    //     cloud_name.entity,
+    //     other.entity,
+    //     effect.to_owned(),
+    // ));
+    // }
 }
 
 // TODO: find solution with lifetime,

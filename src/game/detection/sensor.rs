@@ -43,7 +43,6 @@ impl Default for PassiveSensor {
     }
 }
 
-// Events
 #[derive(Message)]
 pub struct Ping {
     origin_entity: Entity,
