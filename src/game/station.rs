@@ -1,4 +1,4 @@
-use crate::game::{docking::Dockable, prelude::*};
+use crate::game::prelude::*;
 use avian2d::prelude::*;
 
 pub struct StationPlugin;
@@ -7,7 +7,7 @@ impl Plugin for StationPlugin {
 }
 
 #[derive(Component, Debug)]
-#[require(GameEntity, CollisionEventsEnabled, RigidBody::Static, Dockable)]
+#[require(GameEntity)]
 pub struct Station;
 
 pub fn station(

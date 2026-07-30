@@ -1,17 +1,11 @@
 use crate::game::prelude::*;
-use crate::game::{gravity::GravitySource, station::station};
 use avian2d::prelude::*;
-use bevy::{
-    color::palettes::{css::GREEN, tailwind::BLUE_400},
-    prelude::*,
-    ui_widgets::observe,
-};
+use bevy::prelude::*;
 
 const ROTATE_SPEED: f32 = 1.0;
-const SIZE_RADIUS: f32 = 10.;
 
 #[derive(Component, Debug)]
-#[require(GameEntity, CollisionEventsEnabled, RigidBody::Static)]
+#[require(GameEntity, CollisionEventsEnabled)]
 pub struct Planet;
 
 pub struct PlanetPlugin;
@@ -25,32 +19,7 @@ impl Plugin for PlanetPlugin {
     }
 }
 
-pub fn test_planet(
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
-) -> impl Bundle {
-    let station_mesh = Mesh2d(meshes.add(Circle::new(2.)));
-    let station_material = MeshMaterial2d(materials.add(Color::from(GREEN)));
-
-    (
-        Name::new("Rock"),
-        Planet,
-        Collider::circle(SIZE_RADIUS),
-        CollisionEventsEnabled,
-        Mesh2d(meshes.add(Circle::new(SIZE_RADIUS))),
-        MeshMaterial2d(materials.add(Color::from(BLUE_400))),
-        GravitySource::default(),
-        RigidBody::Static,
-        Transform::from_xyz(100., 100., RadarZOrdering::Planet.z_order()),
-        observe(obs_planet_collision),
-        children![(
-            Name::new("Pebble"),
-            station(-50.0, 0., station_mesh, station_material, 1.),
-        )],
-    )
-}
-
-fn obs_planet_collision(
+pub fn obs_planet_collision(
     activate: On<CollisionStart>,
     planet_query: Query<NameOrEntity, (With<CollisionEventsEnabled>, With<Planet>)>,
     mut query: Query<(NameOrEntity, &mut Health), With<CollisionEventsEnabled>>,

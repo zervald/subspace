@@ -35,7 +35,6 @@ pub trait CloudBundle {
                 effects: Arc::from(Self::default_effects()),
             },
             Transform::from_xyz(x, y, RadarZOrdering::Clouds.z_order()),
-            Visibility::Visible,
             CollisionEventsEnabled,
         )
     }
