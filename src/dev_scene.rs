@@ -18,11 +18,12 @@ use bevy::ui_widgets::observe;
 use bevy::{color::palettes::css::*, prelude::*};
 
 pub(super) fn plugin(app: &mut App) {
-    // app.add_systems(OnEnter(Screen::Gameplay), spawn_test_level);
+    app.add_systems(OnEnter(Screen::Gameplay), spawn_test_level);
 }
 
 fn dev_dock() -> impl Scene {
     bsn! {
+        #dev_dock
         Name::new("Pebble dock")
         Dockable
         Collider::circle(2. + 5.)

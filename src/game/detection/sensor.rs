@@ -6,7 +6,7 @@ const DETECTION_MIN: f32 = 0.01;
 pub struct SensorPlugin;
 impl Plugin for SensorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_message::<EventDetection>();
+        app.add_message::<SensorContactDetected>();
         app.add_message::<Ping>();
         app.add_systems(
             FixedUpdate,
@@ -53,7 +53,7 @@ pub struct Ping {
 fn passive_sensor(
     p_sensor_query: Query<(Entity, &PassiveSensor)>,
     detection_query: Query<(Entity, &Emission)>,
-    mut event: MessageWriter<EventDetection>,
+    mut event: MessageWriter<SensorContactDetected>,
 ) {
     if detection_query.is_empty() || p_sensor_query.is_empty() {
         return;
@@ -72,9 +72,9 @@ fn passive_sensor(
             // TODO: raycast to include "obstacles"
             let confidence: f32 = confidence_calc(sensor.power as f32, **detection as f32);
             if confidence > DETECTION_MIN {
-                event.write(EventDetection {
+                event.write(SensorContactDetected {
                     detector: sensor_entity,
-                    target: detected_entity,
+                    contact: detected_entity,
                     confidence,
                 });
             }
@@ -84,7 +84,7 @@ fn passive_sensor(
 
 #[allow(dead_code, unused_variables)]
 fn sensor_ping(
-    mut event: MessageReader<Ping>,
+    mut event: PopulatedMessageReader<Ping>,
     p_sensor_query: Query<(Entity, &PassiveSensor)>,
     detection_query: Query<(Entity, &Emission)>,
 ) {

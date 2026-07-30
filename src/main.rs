@@ -96,6 +96,9 @@ impl Plugin for AppPlugin {
 
         // Spawn the main camera.
         app.add_systems(Startup, spawn_camera);
+
+        // NOTE: dev_scene
+        app.add_plugins(dev_scene::plugin);
     }
 }
 

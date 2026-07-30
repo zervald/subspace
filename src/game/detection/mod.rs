@@ -9,7 +9,7 @@ pub struct DetectionPlugin;
 impl Plugin for DetectionPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((sensor::SensorPlugin, contacts::ContactPlugin));
-        app.add_message::<EventDetection>();
+        app.add_message::<SensorContactDetected>();
         app.add_systems(
             FixedUpdate,
             (detected_clean, detected_update)
@@ -29,21 +29,21 @@ impl Plugin for DetectionPlugin {
 pub struct DetectedContacts(pub HashMap<Entity, f32>);
 
 #[derive(Message)]
-pub struct EventDetection {
+pub struct SensorContactDetected {
     pub detector: Entity,
-    pub target: Entity,
+    pub contact: Entity,
     pub confidence: f32,
 }
 
 fn detected_update(
     mut query: Query<&mut DetectedContacts>,
-    mut event_reader: MessageReader<EventDetection>,
+    mut event_reader: PopulatedMessageReader<SensorContactDetected>,
 ) {
     for event in event_reader.read() {
         let Ok(mut contacts) = query.get_mut(event.detector) else {
             continue;
         };
-        contacts.deref_mut().insert(event.target, event.confidence);
+        contacts.deref_mut().insert(event.contact, event.confidence);
     }
 }
 

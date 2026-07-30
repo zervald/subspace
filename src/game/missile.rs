@@ -31,7 +31,7 @@ impl Plugin for MissilePlugin {
 }
 
 fn ev_spawn_missile(
-    mut event_reader: MessageReader<EventShootMissile>,
+    mut event_reader: PopulatedMessageReader<EventShootMissile>,
     mut commands: Commands,
     mut materials: ResMut<Assets<ColorMaterial>>,
     mut meshes: ResMut<Assets<Mesh>>,

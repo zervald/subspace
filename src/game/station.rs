@@ -23,7 +23,6 @@ pub fn station(
         mesh,
         material,
         RigidBody::Static,
-        CollisionEventsEnabled,
         Transform::from_xyz(x, y, RadarZOrdering::Planet.z_order()),
     )
 }
