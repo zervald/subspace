@@ -1,5 +1,5 @@
 use crate::game::prelude::*;
-use crate::{AppSystems, PausableSystems, attach_observer_on_add};
+use crate::{AppSystems, PausableSystems};
 use avian2d::prelude::*;
 
 pub(super) fn plugin(_app: &mut App) {
@@ -43,6 +43,11 @@ fn crash_damage(
             Some(r) => r.0,
             None => CrashResistance::default().0,
         };
+
+        info!(
+            "COLLISION: #{entity} total_impulse / threshold : {} / {}",
+            total_impulse, threshold,
+        );
 
         if total_impulse > threshold {
             commands.trigger(TakeDamage {
