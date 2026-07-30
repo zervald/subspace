@@ -2,7 +2,8 @@
 pub use crate::game::{
     GameEntity,
     cloud::prelude::*,
-    detection::{DetectedContacts, EventDetection, emission::Emission},
+    damage::TakeDamage,
+    detection::{DetectedContacts, SensorContactDetected, emission::Emission},
     effect::prelude::*,
     gamestate::GameState,
     health::Health,

@@ -24,6 +24,8 @@ pub struct GameEntity;
 
 pub mod asteroids;
 pub mod cloud;
+pub mod collision;
+pub mod damage;
 pub mod detection;
 pub mod docking;
 pub mod effect;
