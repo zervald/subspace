@@ -16,7 +16,11 @@ mod menus;
 mod screens;
 mod theme;
 
-use avian2d::{PhysicsPlugins, dynamics::integrator::Gravity};
+use avian2d::{
+    PhysicsPlugins,
+    dynamics::integrator::Gravity,
+    schedule::{Physics, PhysicsTime},
+};
 use bevy::{asset::AssetMetaCheck, prelude::*};
 
 use crate::game::radar_camera::MainCamera;
@@ -86,6 +90,10 @@ impl Plugin for AppPlugin {
         app.init_state::<Pause>();
         app.configure_sets(Update, PausableSystems.run_if(in_state(Pause(false))));
 
+        // pause physics
+        app.add_systems(OnEnter(Pause(true)), toggle_physics);
+        app.add_systems(OnEnter(Pause(false)), toggle_physics);
+
         // Spawn the main camera.
         app.add_systems(Startup, spawn_camera);
     }
@@ -107,6 +115,14 @@ enum AppSystems {
 /// Whether or not the game is paused.
 #[derive(States, Copy, Clone, Eq, PartialEq, Hash, Debug, Default)]
 pub struct Pause(pub bool);
+
+fn toggle_physics(mut time: ResMut<Time<Physics>>, state: Res<State<Pause>>) {
+    let is_paused = state.get().0;
+    match is_paused {
+        true => time.pause(),
+        false => time.unpause(),
+    }
+}
 
 /// A system set for systems that shouldn't run while the game is paused.
 #[derive(SystemSet, Copy, Clone, Eq, PartialEq, Hash, Debug)]
