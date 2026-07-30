@@ -6,7 +6,7 @@ impl Plugin for StationPlugin {
     fn build(&self, _app: &mut App) {}
 }
 
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Default, Clone)]
 #[require(GameEntity)]
 pub struct Station;
 

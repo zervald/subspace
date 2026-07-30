@@ -1,7 +1,7 @@
 use crate::game::docking::Dockable;
 use crate::game::gravity::GravitySource;
 use crate::game::planet::obs_planet_collision;
-use crate::game::station::station;
+use crate::game::station::{Station, station};
 use crate::{
     game::{
         planet::Planet,
@@ -11,16 +11,39 @@ use crate::{
     screens::Screen,
 };
 use avian2d::collision::collider::Collider;
+use avian2d::collision::collision_events::CollisionEventsEnabled;
 use avian2d::dynamics::rigid_body::RigidBody;
 use bevy::color::palettes::tailwind::BLUE_400;
 use bevy::ui_widgets::observe;
 use bevy::{color::palettes::css::*, prelude::*};
 
 pub(super) fn plugin(app: &mut App) {
-    app.add_systems(OnEnter(Screen::Gameplay), spawn_test_level);
+    // app.add_systems(OnEnter(Screen::Gameplay), spawn_test_level);
 }
 
-pub fn spawn_test_level(
+fn dev_dock() -> impl Scene {
+    bsn! {
+        Name::new("Pebble dock")
+        Dockable
+        Collider::circle(2. + 5.)
+    }
+}
+
+fn dev_station() -> impl Scene {
+    bsn! {
+        #dev_station
+        Station
+        Collider::circle(2.)
+        Mesh2d(asset_value(Circle::new(2.)))
+        MeshMaterial2d<ColorMaterial>(asset_value(Color::from(GREEN)))
+        template_value(RigidBody::Static)
+        CollisionEventsEnabled
+        Transform::from_xyz(-50., 0., RadarZOrdering::Planet.z_order())
+        Children [dev_dock()]
+    }
+}
+
+fn spawn_test_level(
     mut commands: Commands,
     playership_asset: Res<PlayershipAssets>,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -31,7 +54,6 @@ pub fn spawn_test_level(
     commands.spawn((
         Name::new("Level"),
         Transform::default(),
-        Visibility::default(),
         DespawnOnExit(Screen::Gameplay),
         children![
             // Cloud test
@@ -50,7 +72,7 @@ pub fn spawn_test_level(
                 Transform::from_xyz(12., -10., 0.),
                 // Lifetime::from_secs(5.)
             ),
-            test_planet(meshes, materials)
+            test_planet(meshes, materials),
         ],
     ));
 }
