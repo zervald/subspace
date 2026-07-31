@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
-mod electricity;
-mod obscured;
+pub mod electricity;
+pub mod obscured;
 
 #[allow(unused)]
 pub mod prelude {

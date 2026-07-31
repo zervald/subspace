@@ -20,25 +20,38 @@ impl Plugin for SensorPlugin {
 }
 
 // Sensors
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Clone, Default)]
 #[require(DetectedContacts)]
 pub struct ActiveSensor {
     power: i32,
     time_interval: f32,
 }
 
-#[derive(Component, Debug)]
+#[derive(Component, Debug, Clone)]
 #[require(DetectedContacts)]
 pub struct PassiveSensor {
-    active: bool,
-    power: i32,
+    pub active: bool,
+    pub base_value: i32,
+    pub current_power: i32,
+    pub(crate) modified_base: i32,
+}
+
+impl PassiveSensor {
+    pub fn new(base_value: i32, current_power: i32) -> Self {
+        Self {
+            active: true,
+            base_value,
+            current_power,
+            modified_base: base_value,
+        }
+    }
 }
 
 impl Default for PassiveSensor {
     fn default() -> Self {
         Self {
             active: true,
-            power: 10,
+            ..default()
         }
     }
 }
@@ -58,7 +71,7 @@ fn passive_sensor(
         return;
     }
 
-    let confidence_calc = |a: f32, b: f32| (a - b) / a;
+    let confidence_calc = |a: i32, b: i32| (a - b) / a;
 
     for (sensor_entity, sensor) in p_sensor_query {
         if !sensor.active {
@@ -69,7 +82,7 @@ fn passive_sensor(
                 continue;
             }
             // TODO: raycast to include "obstacles"
-            let confidence: f32 = confidence_calc(sensor.power as f32, **detection as f32);
+            let confidence: f32 = confidence_calc(sensor.current_power, **detection) as f32;
             if confidence > DETECTION_MIN {
                 event.write(SensorContactDetected {
                     detector: sensor_entity,

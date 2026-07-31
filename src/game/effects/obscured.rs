@@ -1,16 +1,30 @@
 use bevy::prelude::*;
-use bevy_alchemy::{Delay, EffectTimer, Lifetime};
+use bevy_alchemy::{Delay, Effecting};
+
+use crate::game::detection::sensor::PassiveSensor;
 
 #[derive(Component, Debug, Clone)]
+#[require(Delay)]
 pub struct Obscured {
     magnitude: i32,
 }
 
-pub fn obscure_bundle() -> impl Bundle {
-    (
-        Obscured { magnitude: 1 },   // The amount of damage to apply per tick.
-        Lifetime::from_seconds(3.0), // The duration of the effect.
-        Delay::from_seconds(1.0) // The time between damage ticks.
-            .trigger_immediately(), // Make damage tick immediately when the effect is applied.
-    )
+fn obscure_passive_sensors(
+    effects: Query<(&Effecting, &Delay, &Obscured)>,
+    mut targets: Query<&mut PassiveSensor>,
+) {
+    for (target, delay, obscurement) in effects {
+        // We wait until the delay finishes to apply the damage.
+        if !delay.timer.is_finished() {
+            continue;
+        }
+
+        // Skip if the target doesn't have health.
+        let Ok(mut passive_sensor) = targets.get_mut(target.0) else {
+            continue;
+        };
+
+        // Otherwise, deal the damage.
+        passive_sensor.current_power -= obscurement.magnitude;
+    }
 }

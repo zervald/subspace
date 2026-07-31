@@ -22,6 +22,7 @@ use avian2d::{
     schedule::{Physics, PhysicsTime},
 };
 use bevy::{asset::AssetMetaCheck, prelude::*};
+use bevy_alchemy::AlchemyPlugin;
 
 use crate::game::radar_camera::MainCamera;
 
@@ -58,9 +59,12 @@ impl Plugin for AppPlugin {
                     ..default()
                 }),
         );
-        // TODO: Physics as PausableSystem
+        // physics plugin
         app.add_plugins(PhysicsPlugins::default())
             .insert_resource(Gravity::ZERO);
+
+        // status effects plugin
+        app.add_plugins(AlchemyPlugin);
 
         // Add other plugins.
         app.add_plugins((
