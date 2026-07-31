@@ -55,6 +55,7 @@ fn spawn_test_level(
     commands.spawn((
         Name::new("Level"),
         Transform::default(),
+        Visibility::Visible,
         DespawnOnExit(Screen::Gameplay),
         children![
             // Cloud test
