@@ -1,6 +1,9 @@
 inputs:
   bevy_cli:
     url: github:TheBevyFlock/bevy_cli/main
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
   nixgl:
     url: github:nix-community/nixGL
   nixpkgs:
@@ -10,3 +13,8 @@ inputs:
     inputs:
       nixpkgs:
         follows: nixpkgs
+
+# remove anoying devenv bar
+reload: false
+# for nixGL
+impure: true

@@ -3,15 +3,17 @@
     "bevy_cli": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1784979094,
-        "narHash": "sha256-sDCz7hOEmNYHB7er+nv+P6PuFhbW+9ggfrFu3PU+d7I=",
+        "lastModified": 1785491007,
+        "narHash": "sha256-1fLhwE1Oxh7puO70uWU4F+6+KEagmmGrE3FillpP1Tc=",
         "owner": "TheBevyFlock",
         "repo": "bevy_cli",
-        "rev": "6d8cb94bb8ec0535f63884e50830547f226118a0",
+        "rev": "fec2533d18f8ea5c4f3e3fd5e2722bc8579a7205",
         "type": "github"
       },
       "original": {
@@ -24,11 +26,11 @@
     "devenv": {
       "locked": {
         "dir": "src/modules",
-        "lastModified": 1785435900,
-        "narHash": "sha256-t+Cm2LICKr8eDNM/ruPJBqmCpybZWRgHpgiIuMLt0ww=",
+        "lastModified": 1785519359,
+        "narHash": "sha256-4gAHbk6nmQ/2PtvZftnEVKZQwJEtywBMkn3jK0GMGgo=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "d0ea5226b162f4611e3541cc45547d210e83ae03",
+        "rev": "3d4859dee70d600369a6db148b3a119d5bd5fe8a",
         "type": "github"
       },
       "original": {
@@ -77,7 +79,7 @@
     "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1762090880,
@@ -95,16 +97,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1781577229,
-        "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
+        "lastModified": 1746378225,
+        "narHash": "sha256-OeRSuL8PUjIfL3Q0fTbNJD/fmv1R+K2JAOqWJd3Oceg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+        "rev": "93e8cdce7afc64297cfec447c311470788131cd9",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -127,21 +128,6 @@
       }
     },
     "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1746378225,
-        "narHash": "sha256-OeRSuL8PUjIfL3Q0fTbNJD/fmv1R+K2JAOqWJd3Oceg=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "93e8cdce7afc64297cfec447c311470788131cd9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
       "inputs": {
         "nixpkgs-src": "nixpkgs-src"
       },
@@ -165,7 +151,7 @@
         "bevy_cli": "bevy_cli",
         "devenv": "devenv",
         "nixgl": "nixgl",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay_2"
       }
     },
@@ -197,11 +183,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785388444,
-        "narHash": "sha256-6gtZiMMyfgr1CHA5g6fXoIYkTngQWMm1wtp3gNtuqJU=",
+        "lastModified": 1785476452,
+        "narHash": "sha256-/CXwCFPS41rb/JI2VitKCgVK6V5E6/sfw5ke3B9zyVQ=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "c5b112f74bdbf91c5afd2d3779d12989818c9e8c",
+        "rev": "6ef009bf4c4873cdc1a621826722bdea7c03e62c",
         "type": "github"
       },
       "original": {
