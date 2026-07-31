@@ -2,3 +2,14 @@
 /target
 # This file contains environment-specific configuration like linker settings
 # .cargo/config.toml
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
